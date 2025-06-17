@@ -1,6 +1,6 @@
 \documentclass[a4paper,landscape]{article}
 \usepackage[margin=1cm]{geometry}
-\usepackage[flushbottom=false]{multicol}
+\usepackage{multicol}
 \usepackage{tcolorbox}
  \usepackage{amsmath} 
 \pagestyle{empty}
@@ -12,13 +12,13 @@
 \usepackage{paracol}
 
 
-\setlist[itemize]{leftmargin=10pt}
-\setlist[enumerate]{leftmargin=10pt}
+\setlength{\parskip}{0pt}
+\setlength{\baselineskip}{0pt}
 \setlength{\columnsep}{0cm}
 \setlength{\multicolsep}{0pt}
-\makeatletter
-\algrenewcommand\alglinenumber[1]{\tiny #1}
-\makeatother
+\setlist[itemize]{leftmargin=10pt,noitemsep,itemsep=0pt,nosep}
+\setlist[enumerate]
+{leftmargin=10pt,noitemsep,itemsep=0pt}
 
 % Optional: Define a reusable box style
 \tcbset{
@@ -48,12 +48,6 @@
     },
   }
 }
-% Remove inter-column spacing
-\setlength{\columnsep}{0pt}
-\setlength{\columnseprule}{0pt}
-\setlength{\abovedisplayskip}{0pt}
-\setlength{\belowdisplayskip}{0pt}
-\setlength{\jot}{0pt}
 
 \begin{document}
 \begin{multicols}{7} % Adjust number of columns as needed
@@ -1238,66 +1232,25 @@ Uses a min-priority queue to select the next lightest edge crossing the cut.
     \item At each step, pick the vertex $u \notin S$ with the smallest tentative distance $u.d$.
     \item Relax all edges $(u, v)$ from $u$ to update distance estimates.
 \end{itemize}
-
-
 \textbf{Pseudocode:}
-\noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Init-Single-Source}{$G, s$}
-        \For{\textbf{each} $v \in G.V$}
-            \State $v.d \gets \infty$ \Comment{distance estimate}
-            \State $v.\pi \gets \text{NIL}$ \Comment{predecessor}
-        \EndFor
-        \State $s.d \gets 0$
-    \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
-
-\textbf{Relaxation:}
-\noindent % Prevents indentation if at the start of a paragraph
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.25\linewidth}
-\begin{algorithmic}[1]
-    \Procedure{Relax}{$u, v, w$}
-        \If{$v.d > u.d + w(u, v)$}
-            \State $v.d \gets u.d + w(u, v)$
-            \State $v.\pi \gets u$
-        \EndIf
-    \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
-
-\textbf{Main Algorithm:}
-\noindent % Prevents indentation if at the start of a paragraph
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.25\linewidth}
-\begin{algorithmic}[1]
-    \Procedure{Bellman-Ford}{$G, w, s$}
-        \State \Call{Init-Single-Source}{$G, s$}
-        \For{$i \gets 1$ \textbf{to} $|G.V| - 1$}
-            \For{\textbf{each} edge $(u, v) \in G.E$}
+   \Procedure{Dijkstra}{$G, w, s$}
+    \State \Call{Init-Single-Source}{$G, s$}
+    \State $S \gets \emptyset$
+    \State $Q \gets G.V$ \Comment{insert all vertices into priority queue $Q$}
+      \While{$Q \neq \emptyset$}
+           \State $u \gets$ \Call{Extract-Min}{$Q$}
+          \State $S \gets S \cup \{u\}$
+         \For{each $v \in \text{Adj}[u]$}
                 \State \Call{Relax}{$u, v, w$}
-            \EndFor
-        \EndFor
-        \For{\textbf{each} edge $(u, v) \in G.E$}
-            \If{$v.d > u.d + w(u, v)$}
-                \State \Return \textbf{false} \Comment{Negative-weight cycle detected}
-            \EndIf
-        \EndFor
-        \State \Return \textbf{true}
+         \EndFor
+        \EndWhile
     \EndProcedure
 \end{algorithmic}
 \end{minipage}%
 }
-\textbf{Runtime:}
-\begin{itemize}[noitemsep, topsep=0pt]
-    \item $\Theta(|V|^2)$ with a simple array
-    \item $\Theta((|V| + |E|)\log |V|)$ with a binary heap
-\end{itemize}
 \endtcolorbox
 
 \tcolorbox[mybox={The Hiring Problem}]
