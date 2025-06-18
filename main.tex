@@ -453,6 +453,59 @@ A priority queue maintains a dynamic set \( S \) of elements, each with an assoc
 \end{minipage}%
 }
 \endtcolorbox
+\tcolorbox[mybox={Heap Sort}]
+\textbf{Complexity:}\\
+Space: \( \Theta(n) \), Time: \( \Theta(n \log n) \) \\
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.75\linewidth}
+\begin{algorithmic}[1]
+  \Procedure{Max-Heapify}{$A, i, n$}
+    \State $l \gets \text{Left}(i)$
+    \State $r \gets \text{Right}(i)$
+    \If{$l \leq n$ \textbf{and} $A[l] > A[i]$}
+      \State $largest \gets l$
+    \Else
+      \State $largest \gets i$
+    \EndIf
+    \If{$r \leq n$ \textbf{and} $A[r] > A[largest]$}
+      \State $largest \gets r$
+    \EndIf
+    \If{$largest \neq i$}
+      \State \textbf{exchange} $A[i]$ \textbf{with} $A[largest]$
+      \State \Call{Max-Heapify}{$A, largest, n$}
+    \EndIf
+  \EndProcedure
+\end{algorithmic}
+\end{minipage}%
+}
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.75\linewidth}
+\begin{algorithmic}[1]
+  \Procedure{Build-Max-Heap}{$A, n$}
+    \For{$i \gets \lfloor n/2 \rfloor$ \textbf{downto} $1$}
+      \State \Call{Max-Heapify}{$A, i, n$}
+    \EndFor
+  \EndProcedure
+\end{algorithmic}
+\end{minipage}%
+}
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.75\linewidth}
+\begin{algorithmic}[1]
+  \Procedure{LargestK}{$A, B, k$}
+    \State Create an empty heap $H$
+    \State $B[k] \gets A[1]$
+    \State Insert $A[2]$ and $A[3]$ into $H$
+    \For{$i \gets k - 1, k - 2, \dots, 1$}
+      \State $tmp \gets$ \Call{Extract-Max}{$H$}
+      \State $B[i] \gets tmp$
+      \State Insert $tmp$'s children in $A$ into $H$
+    \EndFor
+  \EndProcedure
+\end{algorithmic}
+\end{minipage}%
+}
+\endtcolorbox
 \tcolorbox[mybox={Linked List}]
 A linked list is a linear data structure where each element (node) points to the next. Unlike arrays, it is not index-based and allows efficient insertions and deletions.
 
@@ -467,7 +520,7 @@ A linked list is a linear data structure where each element (node) points to the
 
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
-\begin{minipage}{1.25\linewidth}
+\begin{minipage}{1.5\linewidth}
 \begin{algorithmic}[1]
     \Statex \Comment{Searches for the first element with key $k$}
     \Procedure{List-Search}{$L, k$}
@@ -611,9 +664,12 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
 \endtcolorbox
 \tcolorbox[mybox={Building a Binary Search Tree}]
 Given a sequence $K = \langle k_1, k_2, \dots, k_n \rangle$ of $n$ distinct sorted keys and, for every $k_i$, a probability $p_i$, find a binary search tree $T$ that minimizes:
-\[
+\resizebox{0.95\linewidth}{!}{%
+$\displaystyle
 E[\text{search cost in } T] = \sum_{i=1}^{n} (\text{depth}_T (k_i) + 1)\cdot p_i
-\]
+$%
+}
+
 
 This is solved via dynamic programming.
 
@@ -1041,7 +1097,9 @@ Then the residual graph is $G_f = (V, E_f)$ where $E_f = \{(u, v) \in V \times V
 \end{itemize}
 
 
-\textbf{Max-Flow Min-Cut Theorem:} The value of the maximum flow equals the capacity of the minimum cut.
+\textbf{Max-Flow Min-Cut Theorem:} The value of the maximum flow equals the capacity of the minimum cut.\\
+\textbf{Augmenting Path}
+Is a path from the source to the sink in the residual graph such that every edge on the path has available capacity
 \endtcolorbox
 
 \tcolorbox[mybox={Bipartite Graphs}]
@@ -1056,6 +1114,13 @@ A \textbf{bipartite graph} (or bigraph) is a graph $G = (U, V, E)$ whose vertice
         \item During BFS, label each unvisited neighbor of a vertex with the opposite parity (\texttt{even} $\leftrightarrow$ \texttt{odd}).
         \item If a conflict arises (a vertex is visited twice with the same parity), the graph is not bipartite.
     \end{itemize}
+\end{itemize}
+ \textbf{Bipartite Match via Max-Flow}
+\begin{itemize}
+  \item \textbf{1. Add a source node} $s$ and connect it to all nodes in the left partition (say $U$) and do same for right part to sink.
+  \item \textbf{2. For each edge} $(u, v)$ in the bipartite graph (with $u \in U$, $v \in V$), add a directed edge from $u$ to $v$.
+  \item \textbf{3. Assign a capacity of 1} to all edges.
+  \item \textbf{4. Run Ford–Fulkerson} from $s$ to $t$.
 \end{itemize}
 \endtcolorbox
 
@@ -1153,6 +1218,11 @@ Uses a min-priority queue to select the next lightest edge crossing the cut.
 
 \textbf{Runtime:} $\Theta(|E| \log |E|)$ due to sorting, plus nearly linear time for Union-Find operations (with union by rank and path compression).
 \endtcolorbox
+\tcolorbox[mybox={Edge Disjoint Paths using Max Flow}]
+You can use the Max-Flow algorithm to find all edge-disjoint paths from a source to a sink by assigning a capacity of $1$ to every edge and running Ford–Fulkerson.  
+The maximum flow value will be equal to the number of edge-disjoint $s$–$t$ paths.
+\endtcolorbox
+
 
 \tcolorbox[mybox={Bellman-Ford Algorithm}]
 \textbf{Goal:} Compute shortest paths from a single source $s$ to all other vertices in a weighted graph $G = (V, E)$, allowing negative edge weights.
@@ -1251,6 +1321,16 @@ Uses a min-priority queue to select the next lightest edge crossing the cut.
 \end{algorithmic}
 \end{minipage}%
 }
+\textbf{Runtime:} $\Theta(|E| \log |V|)$
+\endtcolorbox
+\tcolorbox[mybox={HTable}]
+Hash tables are a data structure that use a function $h(k)$ mapping keys to indices in the range $1$ to $p$, such that each element is stored at index $h(k)$.  
+Collisions are managed using chaining (linked lists), leading to:
+\begin{itemize}
+  \item $\mathcal{O}(1)$ insertion
+  \item $\mathcal{O}(N + E)$ search (in worst-case)
+  \item $\mathcal{O}(1)$ deletion
+\end{itemize}
 \endtcolorbox
 
 \tcolorbox[mybox={The Hiring Problem}]
@@ -1360,6 +1440,8 @@ The expected number of hires is $\Theta(\log n)$, even though there are $n$ cand
 \end{algorithmic}
 \end{minipage}%
 }
+\textbf{Random Runtime:} $\Theta(|N| \log|N|)$
+\textbf{Worst Runtime:} $\Theta(|N|^2)$
 \endtcolorbox
 \tcolorbox[mybox={Online Algorithms}]
 An \textbf{online algorithm} processes its input piece-by-piece in a serial fashion, i.e., it does not have access to the entire input from the start. Instead, it must make decisions based only on the current and past inputs without knowledge of future inputs.
