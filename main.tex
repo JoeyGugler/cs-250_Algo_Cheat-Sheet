@@ -406,14 +406,15 @@ C_{22} &= M_1 - M_2 + M_3 + M_6
 \textbf{Complexity:} \\
 Time: \timecomplexity{\( \Theta(n^{\log_2 7}) \approx \Theta(n^{2.81}) \)}, Space: \( \Theta(n^2) \)
 \endtcolorbox
+
 \tcolorbox[mybox={Priority Queue}]
-A priority queue maintains a dynamic set \( S \) of elements, each with an associated key that defines its priority. At each operation, we can access the element with the highest key.
+A priority queue maintains a dynamic set \( S \) of elements, each with an associated key that defines its priority. At each operation, we can access the element with the highest key. \\
 \textbf{Supported operations:}
 \begin{itemize}[noitemsep,itemsep=0pt]
-    \item \textbf{Insertion:} Insert an element \( x \) into \( S \).
-    \item \textbf{Maximum:} Return the element in \( S \) with the largest key.
-    \item \textbf{Extract-Max:} Remove and return the element with the largest key.
-    \item \textbf{Increase-Key:} Increase the key of an element \( x \) to a new value \( k \) (assuming \( k \geq \) current key).
+    \item \textbf{Insertion:} Insert an element \( x \) into \( S \). \timecomplexity{\(\bigo(log(n))\)}
+    \item \textbf{Maximum:} Return the element in \( S \) with the largest key. \timecomplexity{\(\Theta(1)\)}
+    \item \textbf{Extract-Max:} Remove and return the element with the largest key. \timecomplexity{\(\bigo(log(n))\)}
+    \item \textbf{Increase-Key:} Increase the key of an element \( x \) to a new value \( k \) (assuming \( k \geq \) current key). \timecomplexity{\(\bigo(log(n))\)}
 \end{itemize}
 
 \textbf{Pseudocode:}
@@ -475,6 +476,17 @@ A priority queue maintains a dynamic set \( S \) of elements, each with an assoc
 \end{minipage}%
 }
 \endtcolorbox
+
+\tcolorbox[mybox={Disjoint sets}]
+\begin{itemize}[noitemsep,itemsep=0pt]
+    \item \(S = {S_1, ..., S_k}\) is a collection of disjoint dynamic sets. Each set is identified by a representative which is a member of the set.
+    \item \textbf{Make-Set(x):} make a new set \(S_i = {x}\) and add $S_i$ to $S$. \timecomplexity{\(\Theta(1)\)}
+    \item \textbf{Union(x,y):} if \(x \in S_x, y \in S_y\) then \(S = S - S_x - S_y \cup {S_x \cup S_y}\). \timecomplexity{\(\bigo(m \alpha(n))\)}
+    \item \textbf{Find(x):} returns the representative of the set containing x. \timecomplexity{\(\bigo(n)\)}
+    \item \textbf{Connected components:} returns disjoint sets of all vertices connected inside a graph. \timecomplexity{\(\bigo(V+E)\)}
+\end{itemize}
+\endtcolorbox
+
 \tcolorbox[mybox={Heap Sort}]
 \textbf{Complexity:}\\
 Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
