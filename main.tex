@@ -46,6 +46,15 @@
       \setlength{\abovedisplayshortskip}{0pt}%
       \setlength{\belowdisplayshortskip}{0pt}%
     },
+    before lower={%
+      \fontsize{0.5}{0.5}\selectfont
+      \setlength{\parskip}{0pt}%
+      \setlength{\baselineskip}{0pt}%
+      \setlength{\abovedisplayskip}{0pt}%
+      \setlength{\belowdisplayskip}{0pt}%
+      \setlength{\abovedisplayshortskip}{0pt}%
+      \setlength{\belowdisplayshortskip}{0pt}%
+    }
   }
 }
 
@@ -105,20 +114,27 @@ A stack is a last-in/fist-out (LIFO) data-structure\\
     \item \textbf{Pop:} Retrieve head.
 \end{itemize}
 \endtcolorbox
+
 \tcolorbox[mybox={Master Theorem}]
 Let \( a \geq 1 \), \( b > 1 \), and let \( T(n) \) be defined by the recurrence:
 \[T(n) = a\,T(n/b) + f(n)\]
 Then \( T(n) \) has the following asymptotic bounds:
 \begin{enumerate}[noitemsep, topsep=0pt]
-    \item If \( f(n) = O(n^{\log_b a - \varepsilon}) \) for some \( \varepsilon > 0 \),\\
+    \item If \( f(n) = O(n^{\log_b a - \varepsilon}) \) \\ for some \( \varepsilon > 0 \),\\
           then \( T(n) = \Theta(n^{\log_b a}) \).
 
-    \item If \( f(n) = \Theta(n^{\log_b a} \log^k n) \) for some \( k \geq 0 \),\\
-          then \( T(n) = \Theta(n^{\log_b a} \log^{k+1} n) \).
+    \item If \( f(n) = \Theta(n^{\log_b a} \log^k n) \) \\ for some \( k \geq 0 \),
+          then \\ \( T(n)=\Theta(n^{\log_b a}\log^{k+1}n) \).
 
-    \item If \( f(n) = \Omega(n^{\log_b a + \varepsilon}) \) for some \( \varepsilon > 0 \),\\
-          and if \( a\,f(n/b) \leq c\,f(n) \) for some \( c < 1 \) and large \( n \),\\
+    \item If \( f(n) = \Omega(n^{\log_b a + \varepsilon}) \) \\ for some \( \varepsilon > 0 \),\\
+          and if \( a\,f(n/b) \leq c\,f(n) \) \\ for some \( c < 1 \) and large \( n \),\\
           then \( T(n) = \Theta(f(n)) \).
+\end{enumerate}
+\tcblower
+\begin{enumerate}[noitemsep, topsep=0pt]
+    \item If \(a_1b_1^c + a_2b_2^c + ...  < 1 \) \\ \hspace*{2mm} then \( \Theta(n^c)\).
+    \item If \(a_1b_1^c + a_2b_2^c + ...  = 1\) \\ \hspace*{2mm} then \( \Theta(n^c \log n)\).
+    \item If \(a_1b_1^c + a_2b_2^c + ...  > 1 \) \\ \hspace*{2mm} then \( \Theta(n^e)\), \\ where \(a_1b_1^e + a_2b_2^e + ... = 1\).
 \end{enumerate}
 \endtcolorbox
 
