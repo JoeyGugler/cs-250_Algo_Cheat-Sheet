@@ -1,8 +1,9 @@
 \documentclass[a4paper,landscape]{article}
-\usepackage[margin=1cm]{geometry}
+\usepackage{lmodern}
+\usepackage[margin=0.25cm]{geometry}
 \usepackage{multicol}
 \usepackage{tcolorbox}
- \usepackage{amsmath} 
+\usepackage{amsmath} 
 \pagestyle{empty}
 \usepackage{algpseudocode}
 \usepackage{algorithm} % For the algorithm environment
@@ -10,7 +11,6 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{paracol}
-
 
 \setlength{\parskip}{0pt}
 \setlength{\baselineskip}{0pt}
@@ -38,7 +38,7 @@
     before skip=0pt,
     after skip=0pt,
     before upper={%
-      \fontsize{0.5}{0.5}\selectfont
+      \tiny
       \setlength{\parskip}{0pt}%
       \setlength{\baselineskip}{0pt}%
       \setlength{\abovedisplayskip}{0pt}%
@@ -47,7 +47,7 @@
       \setlength{\belowdisplayshortskip}{0pt}%
     },
     before lower={%
-      \fontsize{0.5}{0.5}\selectfont
+      \tiny
       \setlength{\parskip}{0pt}%
       \setlength{\baselineskip}{0pt}%
       \setlength{\abovedisplayskip}{0pt}%
@@ -58,6 +58,10 @@
   }
 }
 
+% Command to color time complexity for readability
+\newcommand{\timecomplexity}[1]{\textcolor{red}{#1}}
+\newcommand{\bigo}{\mathcal{O}}
+
 \begin{document}
 \begin{multicols}{7} % Adjust number of columns as needed
 \tcolorbox[mybox={Facts}]
@@ -65,7 +69,7 @@
 
 \endtcolorbox
 \tcolorbox[mybox={Loop Invariant}]
-A property that holds before and after each loop iteration.
+A property that holds before and after each loop iteration.\\
 \textbf{Initialization}: Holds before the first iteration.\\
 \textbf{Maintenance}: If it holds before an iteration, it holds after.\\
 \textbf{Termination}: When the loop ends, the invariant helps prove correctness.
@@ -110,8 +114,8 @@ To solve a recurrence using the substitution method:
 A stack is a last-in/fist-out (LIFO) data-structure\\
 \textbf{Supported operations:}
 \begin{itemize}[noitemsep,itemsep=0pt]
-    \item \textbf{Push:} Insert an element at head.
-    \item \textbf{Pop:} Retrieve head.
+    \item \textbf{Push:} Insert an element at head. \timecomplexity{\(\bigo(1)\)}
+    \item \textbf{Pop:} Retrieve head. \timecomplexity{\(\bigo(1)\)}
 \end{itemize}
 \endtcolorbox
 
@@ -131,10 +135,12 @@ Then \( T(n) \) has the following asymptotic bounds:
           then \( T(n) = \Theta(f(n)) \).
 \end{enumerate}
 \tcblower
+Special case:\\
+\(T(n) = a_1T(b_1n) + a_2T(b_2n) + ... + n^c\)
 \begin{enumerate}[noitemsep, topsep=0pt]
     \item If \(a_1b_1^c + a_2b_2^c + ...  < 1 \) \\ \hspace*{2mm} then \( \Theta(n^c)\).
     \item If \(a_1b_1^c + a_2b_2^c + ...  = 1\) \\ \hspace*{2mm} then \( \Theta(n^c \log n)\).
-    \item If \(a_1b_1^c + a_2b_2^c + ...  > 1 \) \\ \hspace*{2mm} then \( \Theta(n^e)\), \\ where \(a_1b_1^e + a_2b_2^e + ... = 1\).
+    \item If \(a_1b_1^c + a_2b_2^c + ...  > 1 \) \\ \hspace*{2mm} then \( \Theta(n^e)\), \\ \hspace*{2mm} where \(a_1b_1^e + a_2b_2^e + ... = 1\).
 \end{enumerate}
 \endtcolorbox
 
@@ -146,7 +152,7 @@ Then \( T(n) \) has the following asymptotic bounds:
     \item Repeat for all elements.
 \end{enumerate}
 \textbf{Complexity:}\\
-Space: \( \Theta(n) \), Time: \( \Theta(n^2) \)\\
+Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n^2) \)}\\
 \textbf{Pseudocode:}
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
@@ -181,7 +187,7 @@ The \textbf{height} of a heap is the length of the longest path from the root to
 \end{itemize}
 
 \textbf{Complexity:} \\
-Space: \( \Theta(n) \), Time: \( \Theta(n \log n) \)
+Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
 \textbf{Pseudocode:}\\
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
@@ -243,9 +249,9 @@ Let $f : \{1, 2, \dots, q\} \to M$ be a function chosen uniformly at random, whe
 If $q > 1.78\sqrt{m}$, then the probability that $f$ is injective is at most $\frac{1}{2}$.
 \endtcolorbox
 \tcolorbox[mybox={Merge Sort}]
-Uses the \textbf{divide and conquer} paradigm.
+Uses the \textbf{divide and conquer} paradigm. \\
 \textbf{Complexity:}\\
-Space: \( \Theta(n) \), Time: \( \Theta(n \log n) \) \\
+Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
 \textbf{Pseudocode:}
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
@@ -309,7 +315,7 @@ At index \( j+1 \), the maximum subarray is either:
     \right)
 $}
 \]
-\textbf{Complexity:} Time \( \Theta(n) \), \\Space \( \Theta(1) \)
+\textbf{Complexity:} Time \timecomplexity{\( \Theta(n) \)}, \\Space \( \Theta(1) \)
 
 \textbf{Pseudocode:}
 \resizebox{0.8\textwidth}{!}{% 
@@ -333,8 +339,8 @@ $}
 \tcolorbox[mybox={Queue}]
 A queue is a first-in, first-out (FIFO) collection.
 \begin{itemize}[noitemsep,itemsep=0pt]
-    \item \textbf{enqueue:} Insert an element at tail.
-    \item \textbf{dequeue:} Retrieve head.
+    \item \textbf{enqueue:} Insert an element at tail. \timecomplexity{\(\bigo(1)\)}
+    \item \textbf{dequeue:} Retrieve head. \timecomplexity{\(\bigo(1)\)}
 \end{itemize}
 \begin{algorithmic}[1]
     \Procedure{Enqueue}{$Q, x$}
@@ -375,7 +381,7 @@ Tables are a special kind of collection that associate keys to values, allowing 
 \noindent\textbf{Direct-Address Tables.}  
 We define a function $f : K \rightarrow \{1, \dots, |K|\}$ and create an array of size $|K|$ where each position corresponds directly to a key, allowing constant-time access.
 \noindent\textbf{Hash Tables.}  
-Hash tables use space proportional to the number of stored keys $|K'|$, i.e., $\Theta(|K'|)$, and support the above operations in expected time $\mathcal{O}(1)$ in the average case.  
+Hash tables use space proportional to the number of stored keys $|K'|$, i.e., $\Theta(|K'|)$, and support the above operations in expected time $\bigo(1)$ in the average case.  
 To achieve this, we define a hash function $h : K \rightarrow \{1, \dots, M\}$ and use an array of size $M$ where each entry contains a linked list of key-value pairs $(k, v)$.
 \endtcolorbox
 \tcolorbox[mybox={Strassen’s Algorithm for Matrix Multiplication}]
@@ -398,7 +404,7 @@ C_{21} &= M_2 + M_4 \\
 C_{22} &= M_1 - M_2 + M_3 + M_6
 \end{align*}
 \textbf{Complexity:} \\
-Time: \( \Theta(n^{\log_2 7}) \approx \Theta(n^{2.81}) \), Space: \( \Theta(n^2) \)
+Time: \timecomplexity{\( \Theta(n^{\log_2 7}) \approx \Theta(n^{2.81}) \)}, Space: \( \Theta(n^2) \)
 \endtcolorbox
 \tcolorbox[mybox={Priority Queue}]
 A priority queue maintains a dynamic set \( S \) of elements, each with an associated key that defines its priority. At each operation, we can access the element with the highest key.
@@ -471,7 +477,7 @@ A priority queue maintains a dynamic set \( S \) of elements, each with an assoc
 \endtcolorbox
 \tcolorbox[mybox={Heap Sort}]
 \textbf{Complexity:}\\
-Space: \( \Theta(n) \), Time: \( \Theta(n \log n) \) \\
+Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.75\linewidth}
 \begin{algorithmic}[1]
@@ -527,9 +533,9 @@ A linked list is a linear data structure where each element (node) points to the
 
 \textbf{Operations:}
 \begin{itemize}[noitemsep,itemsep=0pt]
-    \item \textbf{Search:} Find an element with a specific key — \(\Theta(n)\)
-    \item \textbf{Insert:} Insert an element at the head — \(\Theta(1)\)
-    \item \textbf{Delete:} Remove an element — \(\Theta(1)\)
+    \item \textbf{Search:} Find an element with a specific key — \timecomplexity{\(\Theta(n)\)}
+    \item \textbf{Insert:} Insert an element at the head — \timecomplexity{\(\Theta(1)\)}
+    \item \textbf{Delete:} Remove an element — \timecomplexity{\(\Theta(1)\)}
 \end{itemize}
 
 \textbf{Pseudocode:}
@@ -587,7 +593,7 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
     \Statex \Comment{Searches for a node with key $k$ starting from node $x$}
-    \Statex \Comment{Runs in $O(h)$ time, where $h$ is the height of the tree}
+    \Statex \Comment{Runs in \timecomplexity{$\bigo(h)$} time, where $h$ is the height of the tree ($\bigo(log(n))$ if balanced)}
     \Procedure{Tree-Search}{$x, k$}
         \If{$x = \text{NIL}$ \textbf{or} $k = x.\text{key}$}
             \State \Return $x$
@@ -689,7 +695,7 @@ $%
 
 This is solved via dynamic programming.
 
-\textbf{Time complexity:} $\mathcal{O}(n^3)$
+\textbf{Time complexity:} \timecomplexity{\(\bigo(n^3)\)}
 
 \noindent % Prevents indentation before the resizebox
 \resizebox{\linewidth}{!}{%
@@ -759,7 +765,7 @@ $}
 
 \endtcolorbox
 \tcolorbox[mybox={Counting Sort}]
-\textbf{Counting Sort} assumes the input consists of $n$ integers in the range $0$ to $k$ and sorts them in $\mathcal{O}(n + k)$ time. It is stable and non-comparative.
+\textbf{Counting Sort} assumes the input consists of $n$ integers in the range $0$ to $k$ and sorts them in $\bigo(n + k)$ time. It is stable and non-comparative.
 
 \noindent % Prevents indentation before the resizebox
 \resizebox{\linewidth}{!}{%
@@ -822,8 +828,8 @@ $}
     \EndProcedure
 \end{algorithmic}
 
-\textbf{Time complexity:} $\mathcal{O}(n^3)$ \quad \\
-\textbf{Space complexity:} $\mathcal{O}(n^2)$
+\textbf{Time complexity:} \timecomplexity{\(\bigo(n^3)\)} \quad \\
+\textbf{Space complexity:} $\bigo(n^2)$
 \endtcolorbox
 
 \tcolorbox[mybox={Longest Common Subsequence}]
@@ -873,8 +879,8 @@ $}
 \end{minipage}%
 }
 
-\textbf{Time complexity:} $\mathcal{O}(mn)$ \quad
-\textbf{Space complexity:} $\mathcal{O}(mn)$
+\textbf{Time complexity:} \timecomplexity{\(\bigo(mn)\)} \quad
+\textbf{Space complexity:} $\bigo(mn)$
 \endtcolorbox
 
 \tcolorbox[mybox={Graph}]
@@ -946,7 +952,7 @@ from $s$ to $v$, for all $v \in V$.
 \end{algorithmic}
 \end{minipage}%
 }
-\textbf{Time complexity:} $\mathcal{O}(|V| + |E|)$ \quad
+\textbf{Time complexity:} \timecomplexity{\(\bigo(|V| + |E|)\)} \quad
 \endtcolorbox
 
 \tcolorbox[mybox={Depth-First Search}]
@@ -998,7 +1004,7 @@ Each vertex has a color state:
 \end{algorithmic}
 \end{minipage}%
 }
-\textbf{Time complexity:} $\mathcal{O}(|V| + |E|)$ \quad
+\textbf{Time complexity:} \timecomplexity{\(\bigo(|V| + |E|)\)} \quad
 \endtcolorbox
 
 \tcolorbox[mybox={Topological Sort}]
@@ -1016,7 +1022,7 @@ Given a directed acyclic graph (DAG) $G = (V, E)$, the goal is to produce a line
     \item Return the vertices sorted in descending order of $v.f$.
 \end{enumerate}
 
-\textbf{Running Time:} $\Theta(|V| + |E|)$, same as DFS.
+\textbf{Running Time:} \timecomplexity{$\Theta(|V| + |E|)$}, same as DFS.
 \endtcolorbox
 
 \tcolorbox[mybox={Strongly Connected Components}]
@@ -1036,7 +1042,7 @@ $G$ and $G^T$ share the same SCCs. Computing $G^T$ takes $\Theta(|V| + |E|)$ tim
     \item Each tree in the resulting DFS forest is one SCC.
 \end{enumerate}
 
-\textbf{Time Complexity:} $\Theta(|V| + |E|)$
+\textbf{Time Complexity:} \timecomplexity{\(\Theta(|V| + |E|)\)}
 \endtcolorbox
 
 \tcolorbox[mybox={Flow Network}]
@@ -1343,9 +1349,9 @@ The maximum flow value will be equal to the number of edge-disjoint $s$–$t$ pa
 Hash tables are a data structure that use a function $h(k)$ mapping keys to indices in the range $1$ to $p$, such that each element is stored at index $h(k)$.  
 Collisions are managed using chaining (linked lists), leading to:
 \begin{itemize}
-  \item $\mathcal{O}(1)$ insertion
-  \item $\mathcal{O}(N + E)$ search (in worst-case)
-  \item $\mathcal{O}(1)$ deletion
+  \item $\bigo(1)$ insertion
+  \item $\bigo(N + E)$ search (in worst-case)
+  \item $\bigo(1)$ deletion
 \end{itemize}
 \endtcolorbox
 
