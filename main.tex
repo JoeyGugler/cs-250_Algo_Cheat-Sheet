@@ -639,8 +639,9 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
+$\triangleright$ With h being the height of the tree.
 \begin{algorithmic}[1]
-    \Procedure{Tree-Insert}{$T, z$}
+    \Procedure{Tree-Insert}{$T, z$} \timecomplexity{\(\bigo(h)\)}
         \State $y \gets \text{NIL}$ \Comment{Parent of $x$}
         \State $x \gets T.\text{root}$
         \While{$x \neq \text{NIL}$}
@@ -674,7 +675,7 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
         \EndIf
     \EndProcedure
 
-    \Procedure{Tree-Delete}{$T, z$}
+    \Procedure{Tree-Delete}{$T, z$} \timecomplexity{\(\bigo(h)\)}
         \If{$z.\text{left} = \text{NIL}$}
             \State \Call{Transplant}{$T, z, z.\text{right}$}
         \ElsIf{$z.\text{right} = \text{NIL}$}
@@ -695,6 +696,22 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
 \end{minipage}%
 }
 
+\tcblower
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.25\linewidth}
+\begin{algorithmic}[1]
+    \Procedure{Inorder-Tree-Walk}{$x$} \timecomplexity{\(\bigo(n)\)}
+        \If{$x \neq NIL$}
+            \State \Call{Inorder-Tree-Walk}{$x.\text{left}$}
+            \State print $key[x]$
+            \State \Call{Inorder-Tree-Walk}{$x.\text{right}$}
+        \EndIf
+    \EndProcedure
+\end{algorithmic}
+$\triangleright$ Preorder: print - call(x.left) - call(x.right) \\
+$\triangleright$ Postorder: call(x.left) - call(x.right) - print
+\end{minipage}%
+}
 \endtcolorbox
 \tcolorbox[mybox={Building a Binary Search Tree}]
 Given a sequence $K = \langle k_1, k_2, \dots, k_n \rangle$ of $n$ distinct sorted keys and, for every $k_i$, a probability $p_i$, find a binary search tree $T$ that minimizes:
@@ -739,8 +756,7 @@ This is solved via dynamic programming.
 }
 \endtcolorbox
 \tcolorbox[mybox={Rod Cutting}]
-Given a rod of length $n$ and a table of prices $p_i$ for rods of length $i = 1, \dots, n$, determine the optimal way to cut the rod to maximize profit.
-
+Given a rod of length $n$ and a table of prices $p_i$ for rods of length $i = 1, \dots, n$, determine the optimal way to cut the rod to maximize profit.\\
 The optimal revenue function $r(n)$ is defined as:
 \resizebox{1\textwidth}{!}{$
 r(n) =
@@ -774,10 +790,10 @@ $}
 \end{algorithmic}
 \end{minipage}%
 }
-
+\textbf{Time complexity:} \timecomplexity{\(\Theta(n^2)\)}
 \endtcolorbox
 \tcolorbox[mybox={Counting Sort}]
-\textbf{Counting Sort} assumes the input consists of $n$ integers in the range $0$ to $k$ and sorts them in $\bigo(n + k)$ time. It is stable and non-comparative.
+\textbf{Counting Sort} assumes the input consists of $n$ integers in the range $0$ to $k$ and sorts them in \timecomplexity{$\bigo(n + k)$} time. It is stable and non-comparative.
 
 \noindent % Prevents indentation before the resizebox
 \resizebox{\linewidth}{!}{%
