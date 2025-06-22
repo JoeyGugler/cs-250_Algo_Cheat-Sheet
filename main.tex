@@ -184,6 +184,7 @@ Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n^2) \)}\\
 \end{minipage}%
 }
 \endtcolorbox
+
 \tcolorbox[mybox={Heap Sort}]
 A heap is a \textbf{nearly complete binary tree} where each node satisfies the \textbf{max-heap property}:
 For every node i, its children have smaller or equal values.
@@ -390,19 +391,6 @@ Two key approaches: \textbf{Top-down} and \textbf{Bottom-up}.
 \end{itemize}
 The core idea is to \textbf{remember previous computations} to avoid redundant work and save time.
 \endtcolorbox
-\tcolorbox[mybox={Hash Functions and Tables}]
-Tables are a special kind of collection that associate keys to values, allowing the following operations:
-\begin{enumerate}[noitemsep, topsep=0pt]
-    \item Insert a new key-value pair.
-    \item Delete a key-value pair.
-    \item Search for the value associated with a given key.
-\end{enumerate}
-\noindent\textbf{Direct-Address Tables.}  
-We define a function $f : K \rightarrow \{1, \dots, |K|\}$ and create an array of size $|K|$ where each position corresponds directly to a key, allowing constant-time access.
-\noindent\textbf{Hash Tables.}  
-Hash tables use space proportional to the number of stored keys $|K'|$, i.e., $\Theta(|K'|)$, and support the above operations in expected time $\bigo(1)$ in the average case.  
-To achieve this, we define a hash function $h : K \rightarrow \{1, \dots, M\}$ and use an array of size $M$ where each entry contains a linked list of key-value pairs $(k, v)$.
-\endtcolorbox
 
 \tcolorbox[mybox={Strassen’s Algorithm for Matrix Multiplication}]
 Instead of performing 8 recursive multiplications as in the naive divide-and-conquer matrix multiplication, Strassen’s algorithm reduces it to 7, which improves the time complexity.\\
@@ -508,59 +496,6 @@ A priority queue maintains a dynamic set \( S \) of elements, each with an assoc
 \end{itemize}
 \endtcolorbox
 
-\tcolorbox[mybox={Heap Sort}]
-\textbf{Complexity:}\\
-Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.75\linewidth}
-\begin{algorithmic}[1]
-  \Procedure{Max-Heapify}{$A, i, n$}
-    \State $l \gets \text{Left}(i)$
-    \State $r \gets \text{Right}(i)$
-    \If{$l \leq n$ \textbf{and} $A[l] > A[i]$}
-      \State $largest \gets l$
-    \Else
-      \State $largest \gets i$
-    \EndIf
-    \If{$r \leq n$ \textbf{and} $A[r] > A[largest]$}
-      \State $largest \gets r$
-    \EndIf
-    \If{$largest \neq i$}
-      \State \textbf{exchange} $A[i]$ \textbf{with} $A[largest]$
-      \State \Call{Max-Heapify}{$A, largest, n$}
-    \EndIf
-  \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.75\linewidth}
-\begin{algorithmic}[1]
-  \Procedure{Build-Max-Heap}{$A, n$}
-    \For{$i \gets \lfloor n/2 \rfloor$ \textbf{downto} $1$}
-      \State \Call{Max-Heapify}{$A, i, n$}
-    \EndFor
-  \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.75\linewidth}
-\begin{algorithmic}[1]
-  \Procedure{LargestK}{$A, B, k$}
-    \State Create an empty heap $H$
-    \State $B[k] \gets A[1]$
-    \State Insert $A[2]$ and $A[3]$ into $H$
-    \For{$i \gets k - 1, k - 2, \dots, 1$}
-      \State $tmp \gets$ \Call{Extract-Max}{$H$}
-      \State $B[i] \gets tmp$
-      \State Insert $tmp$'s children in $A$ into $H$
-    \EndFor
-  \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
-\endtcolorbox
 \tcolorbox[mybox={Linked List}]
 A linked list is a linear data structure where each element (node) points to the next. Unlike arrays, it is not index-based and allows efficient insertions and deletions.
 
