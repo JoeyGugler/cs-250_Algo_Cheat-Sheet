@@ -67,7 +67,12 @@
 \tcolorbox[mybox={Facts}]
 \resizebox{0.75\textwidth}{!}{$\displaystyle \sum_{k=0}^{n} ar^k = \frac{ar^{n+1}-a}{r-1} \quad \text{for } r \notin \{0, 1\}$}
 
+\tcblower
+
+$\bigo(1)<\bigo((logn)^c)<\bigo(logn)\\<\bigo(log^2n)<\bigo(n)<\bigo(nlogn)\\<\bigo(n^c)<\bigo(c^n)<\bigo(n!)<\bigo(n^n)$
+
 \endtcolorbox
+
 \tcolorbox[mybox={Loop Invariant}]
 A property that holds before and after each loop iteration.\\
 \textbf{Initialization}: Holds before the first iteration.\\
@@ -100,23 +105,25 @@ $}
   \end{minipage}
 }
 \endtcolorbox
+
 \tcolorbox[mybox={Solving Recurrences}]
 To solve a recurrence using the substitution method:
 
 1. \textbf{Guess} the solution's form (e.g., \( \Theta(n^2) \)).\\
 2. \textbf{Prove the upper bound} by induction using a constant and the guessed form.\\
+  \begin{equation}
+  \begin{split}
+    T(n) & = 2T(n/2) + cn \\[-1mm]
+    & \leq 2\frac{an}{2}log(n/e)+cn \\[-1mm]
+    & = anlogn-an+cn \\[-1mm]
+    & \leq anlogn \\[-1mm]
+    & = \bigo(nlogn)
+  \end{split}
+  \end{equation}
 3. \textbf{Prove the lower bound} similarly.\\
 4. \textbf{Conclude} that the guess is correct.
 \textbf{Example:}\\
 \( T(n) = T(n - 1) + cn \Rightarrow \Theta(n^2) \)
-\endtcolorbox
-\tcolorbox[mybox={Stack}]
-A stack is a last-in/fist-out (LIFO) data-structure\\
-\textbf{Supported operations:}
-\begin{itemize}[noitemsep,itemsep=0pt]
-    \item \textbf{Push:} Insert an element at head. \timecomplexity{\(\bigo(1)\)}
-    \item \textbf{Pop:} Retrieve head. \timecomplexity{\(\bigo(1)\)}
-\end{itemize}
 \endtcolorbox
 
 \tcolorbox[mybox={Master Theorem}]
@@ -142,6 +149,11 @@ Special case:\\
     \item If \(a_1b_1^c + a_2b_2^c + ...  = 1\) \\ \hspace*{2mm} then \( \Theta(n^c \log n)\).
     \item If \(a_1b_1^c + a_2b_2^c + ...  > 1 \) \\ \hspace*{2mm} then \( \Theta(n^e)\), \\ \hspace*{2mm} where \(a_1b_1^e + a_2b_2^e + ... = 1\).
 \end{enumerate}
+\endtcolorbox
+
+\tcolorbox[mybox={Injective Functions}] 
+Let $f : \{1, 2, \dots, q\} \to M$ be a function chosen uniformly at random, where $|M| = m$.  
+If $q > 1.78\sqrt{m}$, then the probability that $f$ is injective is at most $\frac{1}{2}$.
 \endtcolorbox
 
 \tcolorbox[mybox={Insertion Sort}]
@@ -244,10 +256,7 @@ Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
 \end{minipage}%
 }
 \endtcolorbox
-\tcolorbox[mybox={Injective Functions}] 
-Let $f : \{1, 2, \dots, q\} \to M$ be a function chosen uniformly at random, where $|M| = m$.  
-If $q > 1.78\sqrt{m}$, then the probability that $f$ is injective is at most $\frac{1}{2}$.
-\endtcolorbox
+
 \tcolorbox[mybox={Merge Sort}]
 Uses the \textbf{divide and conquer} paradigm. \\
 \textbf{Complexity:}\\
@@ -294,6 +303,16 @@ Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
 \end{minipage}%
 }
 \endtcolorbox
+
+\tcolorbox[mybox={Stack}]
+A stack is a last-in/fist-out (LIFO) data-structure\\
+\textbf{Supported operations:}
+\begin{itemize}[noitemsep,itemsep=0pt]
+    \item \textbf{Push:} Insert an element at head. \timecomplexity{\(\bigo(1)\)}
+    \item \textbf{Pop:} Retrieve head. \timecomplexity{\(\bigo(1)\)}
+\end{itemize}
+\endtcolorbox
+
 \tcolorbox[mybox={Maximum Subarray Problem (Kadane's Algorithm)}]
 \textbf{Idea:}
 Iterate from left to right, maintaining:
@@ -384,6 +403,7 @@ We define a function $f : K \rightarrow \{1, \dots, |K|\}$ and create an array o
 Hash tables use space proportional to the number of stored keys $|K'|$, i.e., $\Theta(|K'|)$, and support the above operations in expected time $\bigo(1)$ in the average case.  
 To achieve this, we define a hash function $h : K \rightarrow \{1, \dots, M\}$ and use an array of size $M$ where each entry contains a linked list of key-value pairs $(k, v)$.
 \endtcolorbox
+
 \tcolorbox[mybox={Strassen’s Algorithm for Matrix Multiplication}]
 Instead of performing 8 recursive multiplications as in the naive divide-and-conquer matrix multiplication, Strassen’s algorithm reduces it to 7, which improves the time complexity.\\
 \textbf{\strut Definitions:}
@@ -404,7 +424,7 @@ C_{21} &= M_2 + M_4 \\
 C_{22} &= M_1 - M_2 + M_3 + M_6
 \end{align*}
 \textbf{Complexity:} \\
-Time: \timecomplexity{\( \Theta(n^{\log_2 7}) \approx \Theta(n^{2.81}) \)}, Space: \( \Theta(n^2) \)
+Time: \timecomplexity{\( \Theta(n^{\log_2 7}) \approx \Theta(n^{2.81}) \)} \\ Space: \( \Theta(n^2) \)
 \endtcolorbox
 
 \tcolorbox[mybox={Priority Queue}]
@@ -480,10 +500,11 @@ A priority queue maintains a dynamic set \( S \) of elements, each with an assoc
 \tcolorbox[mybox={Disjoint sets}]
 \begin{itemize}[noitemsep,itemsep=0pt]
     \item \(S = {S_1, ..., S_k}\) is a collection of disjoint dynamic sets. Each set is identified by a representative which is a member of the set.
-    \item \textbf{Make-Set(x):} make a new set \(S_i = {x}\) and add $S_i$ to $S$. \timecomplexity{\(\Theta(1)\)}
-    \item \textbf{Union(x,y):} if \(x \in S_x, y \in S_y\) then \(S = S - S_x - S_y \cup {S_x \cup S_y}\). \timecomplexity{\(\bigo(m \alpha(n))\)}
-    \item \textbf{Find(x):} returns the representative of the set containing x. \timecomplexity{\(\bigo(n)\)}
-    \item \textbf{Connected components:} returns disjoint sets of all vertices connected inside a graph. \timecomplexity{\(\bigo(V+E)\)}
+    \item Uses a \timecomplexity{linked list} or a \textcolor{blue}{graph forest}.
+    \item \textbf{Make-Set(x):} make a new set \(S_i = {x}\) and add $S_i$ to $S$. \timecomplexity{\(\Theta(1)\)} \textcolor{blue}{\(\Theta(1)\)}
+    \item \textbf{Union(x,y):} if \(x \in S_x, y \in S_y\) then \(S = S - S_x - S_y \cup {S_x \cup S_y}\). \timecomplexity{\(\bigo(m+nlogn)\)} \textcolor{blue}{\(\bigo(m \alpha(n))\)}
+    \item \textbf{Find(x):} returns the representative of the set containing x. \timecomplexity{\(\Theta(1)\)} \textcolor{blue}{\(\bigo(h)\)}
+    \item \textbf{Connected components:} returns disjoint sets of all vertices connected inside a graph. \\ \timecomplexity{\(\bigo(VlogV + E)\)} \textcolor{blue}{\(\bigo(V+E)\)}
 \end{itemize}
 \endtcolorbox
 
@@ -790,8 +811,10 @@ $}
 \end{algorithmic}
 \end{minipage}%
 }
-\textbf{Time complexity:} \timecomplexity{\(\Theta(n^2)\)}
+\textbf{Time complexity:} \timecomplexity{\(\Theta(n^2)\)} \\
+Space complexitiy: $\bigo(n)$
 \endtcolorbox
+
 \tcolorbox[mybox={Counting Sort}]
 \textbf{Counting Sort} assumes the input consists of $n$ integers in the range $0$ to $k$ and sorts them in \timecomplexity{$\bigo(n + k)$} time. It is stable and non-comparative.
 
@@ -1149,7 +1172,8 @@ Then the residual graph is $G_f = (V, E_f)$ where $E_f = \{(u, v) \in V \times V
 
 \textbf{Max-Flow Min-Cut Theorem:} The value of the maximum flow equals the capacity of the minimum cut.\\
 \textbf{Augmenting Path}
-Is a path from the source to the sink in the residual graph such that every edge on the path has available capacity
+Is a path from the source to the sink in the residual graph such that every edge on the path has available capacity \\
+\textbf{Time complexity:} \(\timecomplexity{\bigo(E|flow_{max}|)}\)
 \endtcolorbox
 
 \tcolorbox[mybox={Bipartite Graphs}]
@@ -1230,7 +1254,7 @@ Uses a min-priority queue to select the next lightest edge crossing the cut.
 \end{minipage}%
 }
 
-\textbf{Runtime:} \timecomplexity{$\Theta((V + E) \log V)$} with binary heaps, \timecomplexity{$\Theta(E + V \log V)$} with Fibonacci heaps.
+\textbf{Runtime:} \timecomplexity{$\Theta((ElogV)$} \\ $\Theta(E+VlogV)$ with Fibonacci heaps.
 \endtcolorbox
 
 \tcolorbox[mybox={Kruskal’s Algorithm}]
@@ -1315,7 +1339,7 @@ The maximum flow value will be equal to the number of edge-disjoint $s$–$t$ pa
 \end{minipage}%
 }
 
-\textbf{Main Algorithm:}
+\textbf{Main Algorithm:\\}
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
@@ -1380,6 +1404,7 @@ Collisions are managed using chaining (linked lists), leading to:
   \item \textbf{Insertion} \timecomplexity{$\bigo(1)$}
   \item \textbf{Search} \timecomplexity{$\bigo(N + E)$} (in worst-case)
   \item \textbf{Deletion} \timecomplexity{$\bigo(1)$ }
+  \item Collisions expected for m entries and n insertions (uniformly random hash function): \(\frac{n^2}{m}\)
 \end{itemize}
 \endtcolorbox
 
@@ -1493,6 +1518,15 @@ The expected number of hires is $\Theta(\log n)$, even though there are $n$ cand
 \textbf{Random Runtime:} \timecomplexity{$\Theta(|N| \log|N|)$} \\
 \textbf{Worst Runtime:} \timecomplexity{$\Theta(|N|^2)$}
 \endtcolorbox
+
+\tcolorbox[mybox={Randomized caching}]
+\begin{itemize}
+    \item Each page is marked (if used recently) or unmarked.
+    \item On miss, evict random unmarked page.
+    \item \textbf{Competitive ratio:} \(2H(k) \approx \bigo(logk)\) (nearly optimal, no randomized algorithm can beat $H(k)$).
+\end{itemize}
+\endtcolorbox
+
 \tcolorbox[mybox={Online Algorithms}]
 An \textbf{online algorithm} processes its input piece-by-piece in a serial fashion, i.e., it does not have access to the entire input from the start. Instead, it must make decisions based only on the current and past inputs without knowledge of future inputs.
 
