@@ -1402,7 +1402,7 @@ Hash tables are a data structure that use a function $h(k)$ mapping keys to indi
 Collisions are managed using chaining (linked lists), leading to:
 \begin{itemize}
   \item \textbf{Insertion} \timecomplexity{$\bigo(1)$}
-  \item \textbf{Search} \timecomplexity{$\bigo(N + E)$} (in worst-case)
+  \item \textbf{Search} \timecomplexity{$\bigo(1)$} Worst-case: \timecomplexity{$\bigo(n)$}
   \item \textbf{Deletion} \timecomplexity{$\bigo(1)$ }
   \item Collisions expected for m entries and n insertions (uniformly random hash function): \(\frac{n^2}{m}\)
 \end{itemize}
