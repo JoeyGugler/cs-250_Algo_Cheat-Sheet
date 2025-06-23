@@ -138,8 +138,8 @@ Then \( T(n) \) has the following asymptotic bounds:
     \item If \( f(n) = O(n^{\log_b a - \varepsilon}) \) \\ for some \( \varepsilon > 0 \),\\
           then \( T(n) = \Theta(n^{\log_b a}) \).
 
-    \item If \( f(n) = \Theta(n^{\log_b a} \log^k n) \) \\ for some \( k \geq 0 \),
-          then \\ \( T(n)=\Theta(n^{\log_b a}\log^{k+1}n) \).
+    \item If \( f(n) = \Theta(n^{\log_b a}) \),
+          then \\ \( T(n)=\Theta(n^{\log_b a}logn) \).
 
     \item If \( f(n) = \Omega(n^{\log_b a + \varepsilon}) \) \\ for some \( \varepsilon > 0 \),\\
           and if \( a\,f(n/b) \leq c\,f(n) \) \\ for some \( c < 1 \) and large \( n \),\\
@@ -157,7 +157,8 @@ Special case:\\
 
 \tcolorbox[mybox={Injective Functions}] 
 Let $f : \{1, 2, \dots, q\} \to M$ be a function chosen uniformly at random, where $|M| = m$.  
-If $q > 1.78\sqrt{m}$, then the probability that $f$ is injective is at most $\frac{1}{2}$.
+If $q > 1.78\sqrt{m}$, then the probability that $f$ is injective is at most $\frac{1}{2}$.\\
+$q$ = N\# inputs and $m$ = N\# outputs.
 \endtcolorbox
 
 \tcolorbox[mybox={Insertion Sort}]
@@ -435,6 +436,7 @@ C_{12} &= M_3 + M_5 \\
 C_{21} &= M_2 + M_4 \\
 C_{22} &= M_1 - M_2 + M_3 + M_6
 \end{align*}
+\textbf{Recursion:} $T(n) = 7T(n/2) + \Theta(n^2)$
 \textbf{Complexity:} \\
 Time: \timecomplexity{\( \Theta(n^{\log_2 7}) \approx \Theta(n^{2.81}) \)} \\ Space: \( \Theta(n^2) \)
 \endtcolorbox
@@ -1421,12 +1423,15 @@ Then:
 \textbf{Expected Number of Hires:}  
 Let $X$ be the total number of hires. Define $X = \sum_{i=1}^n I_i$, where $I_i = 1$ if the $i$-th candidate is hired (i.e., better than all previous $i - 1$), and 0 otherwise.
 
-\[
-\mathbb{E}[X] = \sum_{i=1}^n \mathbb{E}[I_i] = \sum_{i=1}^n \frac{1}{i} = H_n
-\]
+\begin{equation}
+    \begin{split}
+    \mathbb{E}[X] = \sum_{i=1}^n \mathbb{E}[I_i] & = \sum_{i=1}^n \frac{1}{i} = H_n \\[-1mm]
+    & = logn + \Theta(1)
+    \end{split}
+\end{equation}
 
 \textbf{Conclusion:}  
-The expected number of hires is $\Theta(\log n)$, even though there are $n$ candidates.
+The expected number of hires is \timecomplexity{$\Theta(\log n)$}, even though there are $n$ candidates.
 \endtcolorbox
 
 \tcolorbox[mybox={Secretary problem}]
@@ -1515,8 +1520,8 @@ $n$ candidates arrive in random order, we can hire at most 1 and want best one.
 \end{algorithmic}
 \end{minipage}%
 }
-\textbf{Random Runtime:} \timecomplexity{$\Theta(|N| \log|N|)$} \\
-\textbf{Worst Runtime:} \timecomplexity{$\Theta(|N|^2)$}
+\textbf{Random Runtime:} \timecomplexity{$\Theta(nlogn)$} \\
+\textbf{Worst Runtime:} \timecomplexity{$\Theta(n^2)$}
 
 \tcblower
 
