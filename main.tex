@@ -61,6 +61,7 @@
 % Command to color time complexity for readability
 \newcommand{\timecomplexity}[1]{\textcolor{red}{#1}}
 \newcommand{\bigo}{\mathcal{O}}
+\algnewcommand{\LeftComment}[1]{\Statex \(\triangleright\) #1}
 
 \begin{document}
 \begin{multicols}{7} % Adjust number of columns as needed
@@ -167,7 +168,7 @@ If $q > 1.78\sqrt{m}$, then the probability that $f$ is injective is at most $\f
     \item Repeat for all elements.
 \end{enumerate}
 \textbf{Complexity:}\\
-Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n^2) \)}\\
+Time: \timecomplexity{\( \Theta(n^2) \)}, Space: \( \Theta(n) \)\\
 \textbf{Pseudocode:}
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
@@ -203,13 +204,13 @@ The \textbf{height} of a heap is the length of the longest path from the root to
 \end{itemize}
 
 \textbf{Complexity:} \\
-Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
+Time: \timecomplexity{\( \Theta(n \log n) \)}, Space: \( \Theta(n) \) \\
 \textbf{Pseudocode:}\\
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Max-Heapify}{$A, i, n$}
+    \Procedure{Max-Heapify}{$A, i, n$} \timecomplexity{$\bigo(logn)$}
         \State $l \gets \text{Left}(i)$
         \State $r \gets \text{Right}(i)$
         \State \textit{largest} $\gets i$
@@ -234,7 +235,7 @@ Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Build-Max-Heap}{$A[1, \dots, n]$}
+    \Procedure{Build-Max-Heap}{$A[1, \dots, n]$} \timecomplexity{$\bigo(n)$}
         \For{$i \gets \lfloor n/2 \rfloor \text{ downto } 1$}
             \State \Call{Max-Heapify}{$A, i, n$}
         \EndFor
@@ -249,7 +250,7 @@ Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Heapsort}{$A[1, \dots, n]$}
+    \Procedure{Heapsort}{$A[1, \dots, n]$} \timecomplexity{$\bigo(nlogn)$}
         \State \Call{Build-Max-Heap}{$A$}
         \For{$i \gets n \text{ downto } 2$}
             \State exchange $A[1]$ with $A[i]$
@@ -264,7 +265,7 @@ Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
 \tcolorbox[mybox={Merge Sort}]
 Uses the \textbf{divide and conquer} paradigm. \\
 \textbf{Complexity:}\\
-Space: \( \Theta(n) \), Time: \timecomplexity{\( \Theta(n \log n) \)} \\
+Time: \timecomplexity{\( \Theta(n \log n) \)}, Space: \( \Theta(n) \) \\
 \textbf{Pseudocode:}
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
@@ -338,24 +339,23 @@ At index \( j+1 \), the maximum subarray is either:
     \right)
 $}
 \]
-\textbf{Complexity:} Time \timecomplexity{\( \Theta(n) \)}, \\Space \( \Theta(1) \)
-
+\textbf{Complexity:} \\
+Time: \timecomplexity{\( \Theta(nlogn) \)}, Space: \( \Theta(n) \)\\
 \textbf{Pseudocode:}
-\resizebox{0.8\textwidth}{!}{% 
-    \begin{minipage}{\textwidth} % keep it wrapped for vertical spacing
-    \renewcommand{\arraystretch}{1.8} % increase line height (default is 1)
-    \begin{algorithmic}[1]
-    \Procedure{Linear-Max-Subarray}{$A[1..n]$}
-        \State $current\_max \gets -\infty$
-        \State $ending\_here\_max \gets -\infty$
-        \For{$i \gets 1$ to $n$}
-            \State $ending\_here\_max \gets \max(A[i], ending\_here\_max + A[i])$
-            \State $current\_max \gets \max(current\_max, ending\_here\_max)$
-        \EndFor
-        \State \Return $current\_max$
-    \EndProcedure
-    \end{algorithmic}
-    \end{minipage}
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.25\linewidth}
+\begin{algorithmic}[1]
+\Procedure{Linear-Max-Subarray}{$A[1..n]$} 
+    \State $current\_max \gets -\infty$
+    \State $ending\_here\_max \gets -\infty$
+    \For{$i \gets 1$ to $n$}
+        \State $ending\_here\_max \gets \max(A[i], ending\_here\_max + A[i])$
+        \State $current\_max \gets \max(current\_max, ending\_here\_max)$
+    \EndFor
+    \State \Return $current\_max$
+\EndProcedure
+\end{algorithmic}
+\end{minipage}
 }
 
 \endtcolorbox
@@ -536,7 +536,7 @@ A linked list is a linear data structure where each element (node) points to the
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.5\linewidth}
 \begin{algorithmic}[1]
-    \Statex \Comment{Searches for the first element with key $k$}
+    \LeftComment{Searches for the first element with key $k$}
     \Procedure{List-Search}{$L, k$}
         \State $x \gets L.\text{head}$
         \While{$x \neq \text{NIL}$ \textbf{and} $x.\text{key} \neq k$}
@@ -545,7 +545,7 @@ A linked list is a linear data structure where each element (node) points to the
         \State \Return $x$
     \EndProcedure
 
-    \Statex \Comment{Inserts a new node $x$ at the head of the list}
+    \LeftComment{Inserts a new node $x$ at the head of the list}
     \Procedure{List-Insert}{$L, x$}
         \State $x.\text{next} \gets L.\text{head}$
         \If{$L.\text{head} \neq \text{NIL}$}
@@ -555,7 +555,7 @@ A linked list is a linear data structure where each element (node) points to the
         \State $x.\text{prev} \gets \text{NIL}$
     \EndProcedure
 
-    \Statex \Comment{Deletes node $x$ from the list}
+    \LeftComment{Deletes node $x$ from the list}
     \Procedure{List-Delete}{$L, x$}
         \If{$x.\text{prev} \neq \text{NIL}$}
             \State $x.\text{prev}.\text{next} \gets x.\text{next}$
@@ -584,7 +584,7 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Statex \Comment{Searches for a node with key $k$ starting from node $x$}
+    \LeftComment{Searches for a node with key $k$ starting from node $x$}
     \Statex \Comment{Runs in \timecomplexity{$\bigo(h)$} time, where $h$ is the height of the tree ($\bigo(log(n))$ if balanced)}
     \Procedure{Tree-Search}{$x, k$}
         \If{$x = \text{NIL}$ \textbf{or} $k = x.\text{key}$}
@@ -615,6 +615,45 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
 \end{minipage}%
 }
 \endtcolorbox
+
+\tcolorbox[mybox={Rod Cutting}]
+Given a rod of length $n$ and a table of prices $p_i$ for rods of length $i = 1, \dots, n$, determine the optimal way to cut the rod to maximize profit.\\
+The optimal revenue function $r(n)$ is defined as:
+\resizebox{1\textwidth}{!}{$
+r(n) =
+\begin{cases}
+    0 & \text{if } n = 0, \\
+    \max_{1 \leq i \leq n} \{p_i + r(n - i)\} & \text{if } n \geq 1.
+\end{cases}
+$}
+
+\noindent % Prevents indentation if at the start of a paragraph
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.25\linewidth}
+\begin{algorithmic}[1]
+    \Procedure{Extended-Bottom-Up-Cut-Rod}{$p, n$}
+        \State let $r[0 \dots n]$ and $s[0 \dots n]$ be new arrays
+        \State $r[0] \gets 0$
+        \State $s[0] \gets 0$ \Comment{Usually $s[0]$ isn't explicitly used for solution reconstruction, but included as per your pseudocode}
+        \For{$j \gets 1 \text{ to } n$}
+            \State $q \gets -\infty$
+            \For{$i \gets 1 \text{ to } j$}
+                \If{$q < p[i] + r[j - i]$}
+                    \State $q \gets p[i] + r[j - i]$
+                    \State $s[j] \gets i$
+                \EndIf
+            \EndFor
+            \State $r[j] \gets q$
+        \EndFor
+        \State \Return $r \text{ and } s$
+    \EndProcedure
+\end{algorithmic}
+\end{minipage}%
+}
+\textbf{Time complexity:} \timecomplexity{\(\Theta(n^2)\)} \\
+Space complexitiy: $\bigo(n)$
+\endtcolorbox
+
 \tcolorbox[mybox={Modify a Binary Tree}]
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
@@ -642,7 +681,7 @@ $\triangleright$ With h being the height of the tree.
         \EndIf
     \EndProcedure
 
-    \Procedure{Transplant}{$T, u, v$}
+    \Procedure{Transplant}{$T, u, v$} \timecomplexity{$\Theta(1)$}
         \If{$u.p = \text{NIL}$}
             \State $T.\text{root} \gets v$
         \ElsIf{$u = u.p.\text{left}$}
@@ -672,6 +711,18 @@ $\triangleright$ With h being the height of the tree.
             \State $y.\text{left}.p \gets y$
         \EndIf
     \EndProcedure
+
+    \Procedure{Tree-Successor}{$x$} \timecomplexity{$\bigo(h)$}
+        \If{$x.\text{right} \neq \text{NIL}$}
+            \State \Return \Call{Tree-Minimum}{$x.\text{right}$}
+        \EndIf
+        \State $y \gets x.\text{p}$
+        \While{$y \neq \text{NIL and } x == y.\text{right}$}
+            \State $x \gets y$
+            \State $y \gets y.\text{p}$
+        \EndWhile
+        \State \Return $y$
+    \EndProcedure
 \end{algorithmic}
 \end{minipage}%
 }
@@ -693,6 +744,35 @@ $\triangleright$ Postorder: call(x.left) - call(x.right) - print
 \end{minipage}%
 }
 \endtcolorbox
+
+\tcolorbox[mybox={Counting Sort}]
+\textbf{Counting Sort} assumes the input consists of $n$ integers in the range $0$ to $k$ and sorts them in \timecomplexity{$\bigo(n + k)$} time. It is stable and non-comparative.
+
+\noindent % Prevents indentation before the resizebox
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.25\linewidth}
+\begin{algorithmic}[1]
+    \Procedure{Counting-Sort}{$A, B, n, k$}
+        \State let $C[0 \dots k]$ be a new array
+        \For{$i \gets 0$ \textbf{to} $k$}
+            \State $C[i] \gets 0$
+        \EndFor
+        \For{$j \gets 1$ \textbf{to} $n$}
+            \State $C[A[j]] \gets C[A[j]] + 1$
+        \EndFor
+        \For{$i \gets 1$ \textbf{to} $k$}
+            \State $C[i] \gets C[i] + C[i - 1]$
+        \EndFor
+        \For{$j \gets n$ \textbf{downto} $1$}
+            \State $B[C[A[j]]] \gets A[j]$
+            \State $C[A[j]] \gets C[A[j]] - 1$
+        \EndFor
+    \EndProcedure
+\end{algorithmic}
+\end{minipage}%
+}
+\endtcolorbox
+
 \tcolorbox[mybox={Building a Binary Search Tree}]
 Given a sequence $K = \langle k_1, k_2, \dots, k_n \rangle$ of $n$ distinct sorted keys and, for every $k_i$, a probability $p_i$, find a binary search tree $T$ that minimizes:
 \resizebox{0.95\linewidth}{!}{%
@@ -735,72 +815,6 @@ This is solved via dynamic programming.
 \end{minipage}%
 }
 \endtcolorbox
-\tcolorbox[mybox={Rod Cutting}]
-Given a rod of length $n$ and a table of prices $p_i$ for rods of length $i = 1, \dots, n$, determine the optimal way to cut the rod to maximize profit.\\
-The optimal revenue function $r(n)$ is defined as:
-\resizebox{1\textwidth}{!}{$
-r(n) =
-\begin{cases}
-    0 & \text{if } n = 0, \\
-    \max_{1 \leq i \leq n} \{p_i + r(n - i)\} & \text{if } n \geq 1.
-\end{cases}
-$}
-
-
-\noindent % Prevents indentation if at the start of a paragraph
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.25\linewidth}
-\begin{algorithmic}[1]
-    \Procedure{Extended-Bottom-Up-Cut-Rod}{$p, n$}
-        \State let $r[0 \dots n]$ and $s[0 \dots n]$ be new arrays
-        \State $r[0] \gets 0$
-        \State $s[0] \gets 0$ \Comment{Usually $s[0]$ isn't explicitly used for solution reconstruction, but included as per your pseudocode}
-        \For{$j \gets 1 \text{ to } n$}
-            \State $q \gets -\infty$
-            \For{$i \gets 1 \text{ to } j$}
-                \If{$q < p[i] + r[j - i]$}
-                    \State $q \gets p[i] + r[j - i]$
-                    \State $s[j] \gets i$
-                \EndIf
-            \EndFor
-            \State $r[j] \gets q$
-        \EndFor
-        \State \Return $r \text{ and } s$
-    \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
-\textbf{Time complexity:} \timecomplexity{\(\Theta(n^2)\)} \\
-Space complexitiy: $\bigo(n)$
-\endtcolorbox
-
-\tcolorbox[mybox={Counting Sort}]
-\textbf{Counting Sort} assumes the input consists of $n$ integers in the range $0$ to $k$ and sorts them in \timecomplexity{$\bigo(n + k)$} time. It is stable and non-comparative.
-
-\noindent % Prevents indentation before the resizebox
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.25\linewidth}
-\begin{algorithmic}[1]
-    \Procedure{Counting-Sort}{$A, B, n, k$}
-        \State let $C[0 \dots k]$ be a new array
-        \For{$i \gets 0$ \textbf{to} $k$}
-            \State $C[i] \gets 0$
-        \EndFor
-        \For{$j \gets 1$ \textbf{to} $n$}
-            \State $C[A[j]] \gets C[A[j]] + 1$
-        \EndFor
-        \For{$i \gets 1$ \textbf{to} $k$}
-            \State $C[i] \gets C[i] + C[i - 1]$
-        \EndFor
-        \For{$j \gets n$ \textbf{downto} $1$}
-            \State $B[C[A[j]]] \gets A[j]$
-            \State $C[A[j]] \gets C[A[j]] - 1$
-        \EndFor
-    \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
-\endtcolorbox
 
 \tcolorbox[mybox={Matrix-Chain Multiplication}]
 Given a chain $\langle A_1, A_2, \dots, A_n \rangle$ of $n$ matrices, where for $i = 1, 2, \dots, n$, matrix $A_i$ has dimensions $p_{i-1} \times p_i$, find the most efficient way to fully parenthesize the product $A_1 A_2 \cdots A_n$ so as to minimize the total number of scalar multiplications.
@@ -814,7 +828,8 @@ m[i, j] =
 \end{cases}
 $}
 
-
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
     \Procedure{Matrix-Chain-Order}{$p$}
         \State $n \gets p.\text{length} - 1$
@@ -837,6 +852,8 @@ $}
         \EndFor
     \EndProcedure
 \end{algorithmic}
+\end{minipage}
+}
 
 \textbf{Time complexity:} \timecomplexity{\(\bigo(n^3)\)} \quad \\
 \textbf{Space complexity:} $\bigo(n^2)$
@@ -905,26 +922,17 @@ an edge set $E$ that contains (ordered) pairs of vertices.
 \hline
 Space & $\Theta(|V| + |E|)$ & $\Theta(|V|^2)$ \\
 \hline
-Time to list all vertices adjacent to $u$ & $\Theta(\deg(u))$ & $\Theta(|V|)$ \\
+List adj($u$) & $\Theta(\deg(u))$ & $\Theta(|V|)$ \\
 \hline
-Time to determine whether $(u, v) \in E$ & $O(\deg(u))$ & $\Theta(1)$ \\
+$(u, v) \in E$ ? & $O(\deg(u))$ & $\Theta(1)$ \\
 \hline
 \end{tabular}
 }
 
-\textbf{Connectivity:} A graph is said to be connected if every pair of vertices in the graph is connected.
-
-
-
-\textbf{Connected Component:} A connected component is a maximal connected subgraph of an undirected graph.
-
-
-
-\textbf{Complete Graph:} A complete graph is a simple undirected graph in which every pair of distinct vertices is connected by a unique edge.
-
-
-
-\textbf{Vertex Cut:} A vertex cut or separating set of a connected graph $G$ is a set of vertices whose removal renders $G$ disconnected.
+\textbf{Connectivity:} A graph is said to be connected if every pair of vertices in the graph is connected. \\
+\textbf{Connected Component:} A connected component is a maximal connected subgraph of an undirected graph. \\
+\textbf{Complete Graph:} A complete graph is a simple undirected graph in which every pair of distinct vertices is connected by a unique edge. \\
+\textbf{Vertex Cut:} A vertex cut or separating set of a connected graph $G$ is a set of vertices whose removal renders $G$ disconnected.\\
 \endtcolorbox
 
 \tcolorbox[mybox={Breadth-First Search}]
