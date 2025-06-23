@@ -525,9 +525,9 @@ A linked list is a linear data structure where each element (node) points to the
 
 \textbf{Operations:}
 \begin{itemize}[noitemsep,itemsep=0pt]
-    \item \textbf{Search:} Find an element with a specific key — \timecomplexity{\(\Theta(n)\)}
-    \item \textbf{Insert:} Insert an element at the head — \timecomplexity{\(\Theta(1)\)}
-    \item \textbf{Delete:} Remove an element — \timecomplexity{\(\Theta(1)\)}
+    \item \textbf{Search:} Find an element with a specific key \timecomplexity{\(\bigo(n)\)}
+    \item \textbf{Insert:} Insert an element at the head \timecomplexity{\(\Theta(1)\)}
+    \item \textbf{Delete:} Remove an element \timecomplexity{\(\Theta(1)\)} \\ \timecomplexity{$\bigo(n)$} if simple list
 \end{itemize}
 
 \textbf{Pseudocode:}
@@ -597,7 +597,7 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
     \EndProcedure
 
     \Statex \Comment{Finds the minimum key node in the subtree rooted at $x$}
-    \Procedure{Tree-Minimum}{$x$}
+    \Procedure{Tree-Minimum}{$x$} \timecomplexity{$\bigo(h)$}
         \While{$x.\text{left} \neq \text{NIL}$}
             \State $x \gets x.\text{left}$
         \EndWhile
@@ -605,7 +605,7 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
     \EndProcedure
 
     \Statex \Comment{Finds the maximum key node in the subtree rooted at $x$}
-    \Procedure{Tree-Maximum}{$x$}
+    \Procedure{Tree-Maximum}{$x$} \timecomplexity{$\bigo(h)$}
         \While{$x.\text{right} \neq \text{NIL}$}
             \State $x \gets x.\text{right}$
         \EndWhile
@@ -973,6 +973,44 @@ from $s$ to $v$, for all $v \in V$.
 \textbf{Time complexity:} \timecomplexity{\(\bigo(|V| + |E|)\)} \quad
 \endtcolorbox
 
+\tcolorbox[mybox={Topological Sort}]
+Given a directed acyclic graph (DAG) $G = (V, E)$, the goal is to produce a linear ordering of its vertices such that for every edge $(u, v) \in E$, vertex $u$ appears before $v$ in the ordering.
+
+\textbf{Key Properties:}
+\begin{itemize}[noitemsep, topsep=0pt]
+    \item A graph is a DAG if and only if a DFS yields no back edges.
+    \item The topological sort is obtained by performing DFS and ordering vertices in decreasing order of their finishing times.
+\end{itemize}
+
+\textbf{Algorithm:}
+\begin{enumerate}[noitemsep, topsep=0pt]
+    \item Run DFS on $G$ to compute finishing times $v.f$ for all $v \in V$.
+    \item Return the vertices sorted in descending order of $v.f$.
+\end{enumerate}
+
+\textbf{Running Time:} \timecomplexity{$\Theta(|V| + |E|)$}, same as DFS.
+\endtcolorbox
+
+\tcolorbox[mybox={Strongly Connected Components}]
+A \textbf{strongly connected component (SCC)} of a directed graph $G = (V, E)$ is a maximal set of vertices $C \subseteq V$ such that for every pair $u, v \in C$, there is a path from $u$ to $v$ and from $v$ to $u$.
+
+\textbf{Transpose of a Graph:} The transpose of $G$, denoted $G^T = (V, E^T)$, has all edges reversed:
+\[
+E^T = \{(u, v) \mid (v, u) \in E\}
+\]
+$G$ and $G^T$ share the same SCCs. Computing $G^T$ takes $\Theta(|V| + |E|)$ time with adjacency lists.
+
+\textbf{Algorithm (Kosaraju's):}
+\begin{enumerate}[noitemsep, topsep=0pt]
+    \item Run \textbf{DFS} on $G$ to compute finishing times $u.f$ for all $u \in V$.
+    \item Compute the transpose $G^T$.
+    \item Run \textbf{DFS} on $G^T$, but visit vertices in order of decreasing $u.f$ (from step 1).
+    \item Each tree in the resulting DFS forest is one SCC.
+\end{enumerate}
+
+\textbf{Time Complexity:} \timecomplexity{\(\Theta(|V| + |E|)\)}
+\endtcolorbox
+
 \tcolorbox[mybox={Depth-First Search}]
 Given, as input, a graph $G = (V, E)$, either directed or undirected, we want to
 output two timestamps on each vertex:
@@ -1032,44 +1070,6 @@ Each vertex has a color state:
 \end{itemize}
 \noindent
 \includegraphics[width=\textwidth]{DFS}%
-\endtcolorbox
-
-\tcolorbox[mybox={Topological Sort}]
-Given a directed acyclic graph (DAG) $G = (V, E)$, the goal is to produce a linear ordering of its vertices such that for every edge $(u, v) \in E$, vertex $u$ appears before $v$ in the ordering.
-
-\textbf{Key Properties:}
-\begin{itemize}[noitemsep, topsep=0pt]
-    \item A graph is a DAG if and only if a DFS yields no back edges.
-    \item The topological sort is obtained by performing DFS and ordering vertices in decreasing order of their finishing times.
-\end{itemize}
-
-\textbf{Algorithm:}
-\begin{enumerate}[noitemsep, topsep=0pt]
-    \item Run DFS on $G$ to compute finishing times $v.f$ for all $v \in V$.
-    \item Return the vertices sorted in descending order of $v.f$.
-\end{enumerate}
-
-\textbf{Running Time:} \timecomplexity{$\Theta(|V| + |E|)$}, same as DFS.
-\endtcolorbox
-
-\tcolorbox[mybox={Strongly Connected Components}]
-A \textbf{strongly connected component (SCC)} of a directed graph $G = (V, E)$ is a maximal set of vertices $C \subseteq V$ such that for every pair $u, v \in C$, there is a path from $u$ to $v$ and from $v$ to $u$.
-
-\textbf{Transpose of a Graph:} The transpose of $G$, denoted $G^T = (V, E^T)$, has all edges reversed:
-\[
-E^T = \{(u, v) \mid (v, u) \in E\}
-\]
-$G$ and $G^T$ share the same SCCs. Computing $G^T$ takes $\Theta(|V| + |E|)$ time with adjacency lists.
-
-\textbf{Algorithm (Kosaraju's):}
-\begin{enumerate}[noitemsep, topsep=0pt]
-    \item Run \textbf{DFS} on $G$ to compute finishing times $u.f$ for all $u \in V$.
-    \item Compute the transpose $G^T$.
-    \item Run \textbf{DFS} on $G^T$, but visit vertices in order of decreasing $u.f$ (from step 1).
-    \item Each tree in the resulting DFS forest is one SCC.
-\end{enumerate}
-
-\textbf{Time Complexity:} \timecomplexity{\(\Theta(|V| + |E|)\)}
 \endtcolorbox
 
 \tcolorbox[mybox={Flow Network}]
@@ -1384,6 +1384,21 @@ Collisions are managed using chaining (linked lists), leading to:
 \end{itemize}
 \endtcolorbox
 
+\tcolorbox[mybox={Randomized caching}]
+\begin{itemize}
+    \item Each page is marked (if used recently) or unmarked.
+    \item On miss, evict random unmarked page.
+    \item \textbf{Competitive ratio:} \(2H(k) \approx \bigo(logk)\) (nearly optimal, no randomized algorithm can beat $H(k)$).
+\end{itemize}
+\endtcolorbox
+
+\tcolorbox[mybox={Deterministic caching}]
+\textbf{LRU/FIFO}:\\
+Competitive ratio = $k(\text{cache size})$.\\
+\textbf{LFU/LIFO}:\\
+Unbounded competitive ratio (arbitrary bad).
+\endtcolorbox
+
 \tcolorbox[mybox={The Hiring Problem}]
 \textbf{Problem:} We interview $n$ candidates for a position, one by one in random order. After each interview, we decide immediately whether to hire the candidate. We want to compute the expected number of times we hire someone (i.e., when they are better than all previous candidates).
 
@@ -1410,10 +1425,19 @@ Let $X$ be the total number of hires. Define $X = \sum_{i=1}^n I_i$, where $I_i 
 \mathbb{E}[X] = \sum_{i=1}^n \mathbb{E}[I_i] = \sum_{i=1}^n \frac{1}{i} = H_n
 \]
 
-
 \textbf{Conclusion:}  
 The expected number of hires is $\Theta(\log n)$, even though there are $n$ candidates.
 \endtcolorbox
+
+\tcolorbox[mybox={Secretary problem}]
+$n$ candidates arrive in random order, we can hire at most 1 and want best one.
+\begin{itemize}
+    \item Hire 1st candidate: \\Pr[success] = $1/n$.
+    \item Observe first n/2 and select first better: Pr[success] $\geq 1/4$
+    \item Optimal: observe n/e candidates and select first better:\\ Pr[success] $\geq 1/e \approx 36.8\%$
+\end{itemize}
+\endtcolorbox
+
 \tcolorbox[mybox={Quick Sort}]
 \textbf{Quick Sort} is a divide-and-conquer algorithm with the following steps:
 
@@ -1427,7 +1451,7 @@ The expected number of hires is $\Theta(\log n)$, even though there are $n$ cand
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Partition}{$A, p, r$}
+    \Procedure{Partition}{$A, p, r$} \timecomplexity{$\bigo(n)$}
         \State $x \gets A[r]$
         \State $i \gets p - 1$
         \For{$j \gets p$ \textbf{to} $r - 1$}
@@ -1449,7 +1473,7 @@ The expected number of hires is $\Theta(\log n)$, even though there are $n$ cand
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Quick-Sort}{$A, p, r$}
+    \Procedure{Quick-Sort}{$A, p, r$} \timecomplexity{$\bigo(nlogn)$}
         \If{$p < r$}
             \State $q \gets \Call{Partition}{A, p, r}$
             \State \Call{Quick-Sort}{$A, p, q - 1$}
@@ -1470,7 +1494,7 @@ The expected number of hires is $\Theta(\log n)$, even though there are $n$ cand
         \State $i \gets \Call{Random}{p, r}$
         \State exchange $A[r]$ with $A[i]$
         \State \Return \Call{Partition}{$A, p, r$}
-    \EndProcedure
+    \EndProcedure \timecomplexity{$\Theta(nlogn)$}
 \end{algorithmic}
 \end{minipage}%
 }
@@ -1493,14 +1517,15 @@ The expected number of hires is $\Theta(\log n)$, even though there are $n$ cand
 }
 \textbf{Random Runtime:} \timecomplexity{$\Theta(|N| \log|N|)$} \\
 \textbf{Worst Runtime:} \timecomplexity{$\Theta(|N|^2)$}
-\endtcolorbox
 
-\tcolorbox[mybox={Randomized caching}]
+\tcblower
+
+\textbf{Probability} to compare elements of A $z_i$ with $z_j$:
 \begin{itemize}
-    \item Each page is marked (if used recently) or unmarked.
-    \item On miss, evict random unmarked page.
-    \item \textbf{Competitive ratio:} \(2H(k) \approx \bigo(logk)\) (nearly optimal, no randomized algorithm can beat $H(k)$).
+    \item If x the pivot $z_i < x < z_j$ then $Pr = 0$.
+    \item Else $Pr = \frac{2}{j-i+1}$
 \end{itemize}
+
 \endtcolorbox
 
 \tcolorbox[mybox={Online Algorithms}]
