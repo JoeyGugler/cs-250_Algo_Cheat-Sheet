@@ -111,15 +111,18 @@ To solve a recurrence using the substitution method:
 
 1. \textbf{Guess} the solution's form (e.g., \( \Theta(n^2) \)).\\
 2. \textbf{Prove the upper bound} by induction using a constant and the guessed form.\\
+  \textbf{Base cases:} For any constant $n \in \left\{2,3,4\right\}$, $T(n)$ has a constant value, selecting a larger than this value will satisfy the base cases when $n \in \left\{2,3,4\right\}$. \\
+  \textbf{Inductive step:} Assume statement true $\forall n \in \left\{2,3,...,k-1\right\}$ and prove the statement for $n=k$.
   \begin{equation}
   \begin{split}
     T(n) & = 2T(n/2) + cn \\[-1mm]
-    & \leq 2\frac{an}{2}log(n/e)+cn \\[-1mm]
+    & \leq 2\frac{an}{2}log(n/2)+cn \\[-1mm]
     & = anlogn-an+cn \\[-1mm]
     & \leq anlogn \\[-1mm]
     & = \bigo(nlogn)
   \end{split}
   \end{equation}
+  We can thus select a to be a positive constant so that both the base cases and the inductive step holds. \\Hence, $T(n)=\bigo(nlogn)$.\\
 3. \textbf{Prove the lower bound} similarly.\\
 4. \textbf{Conclude} that the guess is correct.
 \textbf{Example:}\\
@@ -383,6 +386,7 @@ A queue is a first-in, first-out (FIFO) collection.
     \EndProcedure
 \end{algorithmic}
 \endtcolorbox
+
 \tcolorbox[mybox={Dynamic Programming}]
 Two key approaches: \textbf{Top-down} and \textbf{Bottom-up}.
 \begin{itemize}[noitemsep, itemsep=0pt]
@@ -390,6 +394,26 @@ Two key approaches: \textbf{Top-down} and \textbf{Bottom-up}.
     \item \textbf{Bottom-up:} Starts from base cases (e.g., 0) and iteratively builds up to the final solution.
 \end{itemize}
 The core idea is to \textbf{remember previous computations} to avoid redundant work and save time.
+\endtcolorbox
+
+\tcolorbox[mybox={Binary search}]
+\begin{algorithmic}[1]
+    \Procedure{BS}{$A,k,p,q$}
+        \If{$q<p$}
+            \State \Return $"NO"$ \Comment{array is empty and doesn't contain k}
+        \Else
+            \State $mid \gets \lfloor \frac{p+q}{2} \rfloor$
+            \If{$A[mid] = k$}
+                \State \Return $"YES"$
+            \ElsIf{$A[mid] > k$}
+                \State \Return \Call{BS}{$A,k,p,mid-1$}
+            \Else
+                \State \Return \Call{BS}{$A,k,mid+1,q$}
+            \EndIf
+        \EndIf
+    \EndProcedure
+\end{algorithmic}
+\textbf{Time complexity:} \timecomplexity{$\bigo(logn)$}
 \endtcolorbox
 
 \tcolorbox[mybox={Strassen’s Algorithm for Matrix Multiplication}]
@@ -990,7 +1014,16 @@ Each vertex has a color state:
 \end{algorithmic}
 \end{minipage}%
 }
-\textbf{Time complexity:} \timecomplexity{\(\bigo(|V| + |E|)\)} \quad
+\textbf{Time complexity:} \timecomplexity{\(\bigo(|V| + |E|)\)} \\
+\textbf{Edge classification:}
+\begin{itemize}
+    \item \textbf{\color{orange}Tree edge:} in the DFS forest. (normal edge)
+    \item \textbf{\color{blue}Back edge:} (u,v) where u is descendant of v
+    \item \textbf{\color{red}Forward edge:} (u,v) where v is descendent of u
+    \item \textbf{\color{green}Cross edge:} any other edge
+\end{itemize}
+\noindent
+\includegraphics[width=\textwidth]{DFS}%
 \endtcolorbox
 
 \tcolorbox[mybox={Topological Sort}]
@@ -1337,9 +1370,9 @@ Hash tables are a data structure that use a function $h(k)$ mapping keys to indi
 Collisions are managed using chaining (linked lists), leading to:
 \begin{itemize}
   \item \textbf{Insertion} \timecomplexity{$\bigo(1)$}
-  \item \textbf{Search} \timecomplexity{$\bigo(1)$} Worst-case: \timecomplexity{$\bigo(n)$}
+  \item \textbf{Search} \timecomplexity{$\bigo(1)$} E[x]: \timecomplexity{$\bigo(n/m)$}
   \item \textbf{Deletion} \timecomplexity{$\bigo(1)$ }
-  \item Collisions expected for m entries and n insertions (uniformly random hash function): \(\frac{n^2}{m}\)
+  \item \textbf{Collisions expected} for m entries and n insertions (uniformly random hash function): \(\frac{n^2}{m}\)
 \end{itemize}
 \endtcolorbox
 
