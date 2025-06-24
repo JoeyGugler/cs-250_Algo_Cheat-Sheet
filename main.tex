@@ -1,8 +1,9 @@
 \documentclass[a4paper,landscape]{article}
-\usepackage[margin=1cm]{geometry}
+\usepackage{lmodern}
+\usepackage[margin=0.25cm]{geometry}
 \usepackage{multicol}
 \usepackage{tcolorbox}
- \usepackage{amsmath} 
+\usepackage{amsmath} 
 \pagestyle{empty}
 \usepackage{algpseudocode}
 \usepackage{algorithm} % For the algorithm environment
@@ -10,7 +11,6 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{paracol}
-
 
 \setlength{\parskip}{0pt}
 \setlength{\baselineskip}{0pt}
@@ -38,7 +38,7 @@
     before skip=0pt,
     after skip=0pt,
     before upper={%
-      \fontsize{0.5}{0.5}\selectfont
+      \tiny
       \setlength{\parskip}{0pt}%
       \setlength{\baselineskip}{0pt}%
       \setlength{\abovedisplayskip}{0pt}%
@@ -46,17 +46,39 @@
       \setlength{\abovedisplayshortskip}{0pt}%
       \setlength{\belowdisplayshortskip}{0pt}%
     },
+    before lower={%
+      \tiny
+      \setlength{\parskip}{0pt}%
+      \setlength{\baselineskip}{0pt}%
+      \setlength{\abovedisplayskip}{0pt}%
+      \setlength{\belowdisplayskip}{0pt}%
+      \setlength{\abovedisplayshortskip}{0pt}%
+      \setlength{\belowdisplayshortskip}{0pt}%
+    }
   }
 }
+
+% Command to color time complexity for readability
+\newcommand{\timecomplexity}[1]{\textcolor{red}{#1}}
+\newcommand{\bigo}{\mathcal{O}}
+\algnewcommand{\LeftComment}[1]{\Statex \(\triangleright\) #1}
 
 \begin{document}
 \begin{multicols}{7} % Adjust number of columns as needed
 \tcolorbox[mybox={Facts}]
-\resizebox{0.75\textwidth}{!}{$\displaystyle \sum_{k=0}^{n} ar^k = \frac{ar^{n+1}-a}{r-1} \quad \text{for } r \notin \{0, 1\}$}
+\resizebox{0.75\textwidth}{!}{$\displaystyle \sum_{k=0}^{n} ar^k = \frac{ar^{n+1}-a}{r-1} \quad \text{for } r \notin \{0, 1\}$}\\
+$log_br = \frac{logb}{logr}$\\
+$b^e = 2^{log(b)e}$\\
+$a^{\frac{1}{loga}} = 2$\\
+$a^{logb} = 2^{log(a)log(b)} = b^{loga}$
+\tcblower
+
+$\bigo(1)<\bigo((logn)^c)<\bigo(logn)\\<\bigo(log^2n)<\bigo(n)<\bigo(nlogn)\\<\bigo(n^c)<\bigo(c^n)<\bigo(n!)<\bigo(n^n)$
 
 \endtcolorbox
+
 \tcolorbox[mybox={Loop Invariant}]
-A property that holds before and after each loop iteration.
+A property that holds before and after each loop iteration.\\
 \textbf{Initialization}: Holds before the first iteration.\\
 \textbf{Maintenance}: If it holds before an iteration, it holds after.\\
 \textbf{Termination}: When the loop ends, the invariant helps prove correctness.
@@ -87,38 +109,52 @@ $}
   \end{minipage}
 }
 \endtcolorbox
+
 \tcolorbox[mybox={Solving Recurrences}]
 To solve a recurrence using the substitution method:
 
 1. \textbf{Guess} the solution's form (e.g., \( \Theta(n^2) \)).\\
 2. \textbf{Prove the upper bound} by induction using a constant and the guessed form.\\
+  \textbf{Base cases:} For any constant $n \in \left\{2,3,4\right\}$, $T(n)$ has a constant value, selecting a larger than this value will satisfy the base cases when $n \in \left\{2,3,4\right\}$. \\
+  \textbf{Inductive step:} Assume statement true $\forall n \in \left\{2,3,...,k-1\right\}$ and prove the statement for $n=k$.
+  \begin{equation}
+  \begin{split}
+    T(n) & = 2T(n/2) + cn \\[-1mm]
+    & \leq 2\frac{an}{2}log(n/2)+cn \\[-1mm]
+    & = anlogn-an+cn \\[-1mm]
+    & \leq anlogn \\[-1mm]
+    & = \bigo(nlogn)
+  \end{split}
+  \end{equation}
+  We can thus select a to be a positive constant so that both the base cases and the inductive step holds. \\Hence, $T(n)=\bigo(nlogn)$.\\
 3. \textbf{Prove the lower bound} similarly.\\
 4. \textbf{Conclude} that the guess is correct.
 \textbf{Example:}\\
 \( T(n) = T(n - 1) + cn \Rightarrow \Theta(n^2) \)
 \endtcolorbox
-\tcolorbox[mybox={Stack}]
-A stack is a last-in/fist-out (LIFO) data-structure\\
-\textbf{Supported operations:}
-\begin{itemize}[noitemsep,itemsep=0pt]
-    \item \textbf{Push:} Insert an element at head.
-    \item \textbf{Pop:} Retrieve head.
-\end{itemize}
-\endtcolorbox
+
 \tcolorbox[mybox={Master Theorem}]
 Let \( a \geq 1 \), \( b > 1 \), and let \( T(n) \) be defined by the recurrence:
 \[T(n) = a\,T(n/b) + f(n)\]
 Then \( T(n) \) has the following asymptotic bounds:
 \begin{enumerate}[noitemsep, topsep=0pt]
-    \item If \( f(n) = O(n^{\log_b a - \varepsilon}) \) for some \( \varepsilon > 0 \),\\
+    \item If \( f(n) = O(n^{\log_b a - \varepsilon}) \) \\ for some \( \varepsilon > 0 \),\\
           then \( T(n) = \Theta(n^{\log_b a}) \).
 
-    \item If \( f(n) = \Theta(n^{\log_b a} \log^k n) \) for some \( k \geq 0 \),\\
-          then \( T(n) = \Theta(n^{\log_b a} \log^{k+1} n) \).
+    \item If \( f(n) = \Theta(n^{\log_b a}) \),
+          then \\ \( T(n)=\Theta(n^{\log_b a}logn) \).
 
-    \item If \( f(n) = \Omega(n^{\log_b a + \varepsilon}) \) for some \( \varepsilon > 0 \),\\
-          and if \( a\,f(n/b) \leq c\,f(n) \) for some \( c < 1 \) and large \( n \),\\
+    \item If \( f(n) = \Omega(n^{\log_b a + \varepsilon}) \) \\ for some \( \varepsilon > 0 \),\\
+          and if \( a\,f(n/b) \leq c\,f(n) \) \\ for some \( c < 1 \) and large \( n \),\\
           then \( T(n) = \Theta(f(n)) \).
+\end{enumerate}
+\tcblower
+Special case:\\
+\(T(n) = a_1T(b_1n) + a_2T(b_2n) + ... + n^c\)
+\begin{enumerate}[noitemsep, topsep=0pt]
+    \item If \(a_1b_1^c + a_2b_2^c + ...  < 1 \) \\ \hspace*{2mm} then \( \Theta(n^c)\).
+    \item If \(a_1b_1^c + a_2b_2^c + ...  = 1\) \\ \hspace*{2mm} then \( \Theta(n^c \log n)\).
+    \item If \(a_1b_1^c + a_2b_2^c + ...  > 1 \) \\ \hspace*{2mm} then \( \Theta(n^e)\), \\ \hspace*{2mm} where \(a_1b_1^e + a_2b_2^e + ... = 1\).
 \end{enumerate}
 \endtcolorbox
 
@@ -130,7 +166,7 @@ Then \( T(n) \) has the following asymptotic bounds:
     \item Repeat for all elements.
 \end{enumerate}
 \textbf{Complexity:}\\
-Space: \( \Theta(n) \), Time: \( \Theta(n^2) \)\\
+Time: \timecomplexity{\( \Theta(n^2) \)}, Space: \( \Theta(n) \)\\
 \textbf{Pseudocode:}
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
@@ -150,6 +186,7 @@ Space: \( \Theta(n) \), Time: \( \Theta(n^2) \)\\
 \end{minipage}%
 }
 \endtcolorbox
+
 \tcolorbox[mybox={Heap Sort}]
 A heap is a \textbf{nearly complete binary tree} where each node satisfies the \textbf{max-heap property}:
 For every node i, its children have smaller or equal values.
@@ -165,13 +202,13 @@ The \textbf{height} of a heap is the length of the longest path from the root to
 \end{itemize}
 
 \textbf{Complexity:} \\
-Space: \( \Theta(n) \), Time: \( \Theta(n \log n) \)
+Time: \timecomplexity{\( \Theta(n \log n) \)}, Space: \( \Theta(n) \) \\
 \textbf{Pseudocode:}\\
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Max-Heapify}{$A, i, n$}
+    \Procedure{Max-Heapify}{$A, i, n$} \timecomplexity{$\bigo(logn)$}
         \State $l \gets \text{Left}(i)$
         \State $r \gets \text{Right}(i)$
         \State \textit{largest} $\gets i$
@@ -196,7 +233,7 @@ Space: \( \Theta(n) \), Time: \( \Theta(n \log n) \)
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Build-Max-Heap}{$A[1, \dots, n]$}
+    \Procedure{Build-Max-Heap}{$A[1, \dots, n]$} \timecomplexity{$\bigo(n)$}
         \For{$i \gets \lfloor n/2 \rfloor \text{ downto } 1$}
             \State \Call{Max-Heapify}{$A, i, n$}
         \EndFor
@@ -211,7 +248,7 @@ Space: \( \Theta(n) \), Time: \( \Theta(n \log n) \)
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Heapsort}{$A[1, \dots, n]$}
+    \Procedure{Heapsort}{$A[1, \dots, n]$} \timecomplexity{$\bigo(nlogn)$}
         \State \Call{Build-Max-Heap}{$A$}
         \For{$i \gets n \text{ downto } 2$}
             \State exchange $A[1]$ with $A[i]$
@@ -222,14 +259,11 @@ Space: \( \Theta(n) \), Time: \( \Theta(n \log n) \)
 \end{minipage}%
 }
 \endtcolorbox
-\tcolorbox[mybox={Injective Functions}] 
-Let $f : \{1, 2, \dots, q\} \to M$ be a function chosen uniformly at random, where $|M| = m$.  
-If $q > 1.78\sqrt{m}$, then the probability that $f$ is injective is at most $\frac{1}{2}$.
-\endtcolorbox
+
 \tcolorbox[mybox={Merge Sort}]
-Uses the \textbf{divide and conquer} paradigm.
+Uses the \textbf{divide and conquer} paradigm. \\
 \textbf{Complexity:}\\
-Space: \( \Theta(n) \), Time: \( \Theta(n \log n) \) \\
+Time: \timecomplexity{\( \Theta(n \log n) \)}, Space: \( \Theta(n) \) \\
 \textbf{Pseudocode:}
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
@@ -272,6 +306,16 @@ Space: \( \Theta(n) \), Time: \( \Theta(n \log n) \) \\
 \end{minipage}%
 }
 \endtcolorbox
+
+\tcolorbox[mybox={Stack}]
+A stack is a last-in/fist-out (LIFO) data-structure\\
+\textbf{Supported operations:}
+\begin{itemize}[noitemsep,itemsep=0pt]
+    \item \textbf{Push:} Insert an element at head. \timecomplexity{\(\bigo(1)\)}
+    \item \textbf{Pop:} Retrieve head. \timecomplexity{\(\bigo(1)\)}
+\end{itemize}
+\endtcolorbox
+
 \tcolorbox[mybox={Maximum Subarray Problem (Kadane's Algorithm)}]
 \textbf{Idea:}
 Iterate from left to right, maintaining:
@@ -293,32 +337,31 @@ At index \( j+1 \), the maximum subarray is either:
     \right)
 $}
 \]
-\textbf{Complexity:} Time \( \Theta(n) \), \\Space \( \Theta(1) \)
-
+\textbf{Complexity:} \\
+Time: \timecomplexity{\( \Theta(nlogn) \)}, Space: \( \Theta(n) \)\\
 \textbf{Pseudocode:}
-\resizebox{0.8\textwidth}{!}{% 
-    \begin{minipage}{\textwidth} % keep it wrapped for vertical spacing
-    \renewcommand{\arraystretch}{1.8} % increase line height (default is 1)
-    \begin{algorithmic}[1]
-    \Procedure{Linear-Max-Subarray}{$A[1..n]$}
-        \State $current\_max \gets -\infty$
-        \State $ending\_here\_max \gets -\infty$
-        \For{$i \gets 1$ to $n$}
-            \State $ending\_here\_max \gets \max(A[i], ending\_here\_max + A[i])$
-            \State $current\_max \gets \max(current\_max, ending\_here\_max)$
-        \EndFor
-        \State \Return $current\_max$
-    \EndProcedure
-    \end{algorithmic}
-    \end{minipage}
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.25\linewidth}
+\begin{algorithmic}[1]
+\Procedure{Linear-Max-Subarray}{$A[1..n]$} 
+    \State $current\_max \gets -\infty$
+    \State $ending\_here\_max \gets -\infty$
+    \For{$i \gets 1$ to $n$}
+        \State $ending\_here\_max \gets \max(A[i], ending\_here\_max + A[i])$
+        \State $current\_max \gets \max(current\_max, ending\_here\_max)$
+    \EndFor
+    \State \Return $current\_max$
+\EndProcedure
+\end{algorithmic}
+\end{minipage}
 }
 
 \endtcolorbox
 \tcolorbox[mybox={Queue}]
 A queue is a first-in, first-out (FIFO) collection.
 \begin{itemize}[noitemsep,itemsep=0pt]
-    \item \textbf{enqueue:} Insert an element at tail.
-    \item \textbf{dequeue:} Retrieve head.
+    \item \textbf{enqueue:} Insert an element at tail. \timecomplexity{\(\bigo(1)\)}
+    \item \textbf{dequeue:} Retrieve head. \timecomplexity{\(\bigo(1)\)}
 \end{itemize}
 \begin{algorithmic}[1]
     \Procedure{Enqueue}{$Q, x$}
@@ -341,6 +384,7 @@ A queue is a first-in, first-out (FIFO) collection.
     \EndProcedure
 \end{algorithmic}
 \endtcolorbox
+
 \tcolorbox[mybox={Dynamic Programming}]
 Two key approaches: \textbf{Top-down} and \textbf{Bottom-up}.
 \begin{itemize}[noitemsep, itemsep=0pt]
@@ -349,19 +393,33 @@ Two key approaches: \textbf{Top-down} and \textbf{Bottom-up}.
 \end{itemize}
 The core idea is to \textbf{remember previous computations} to avoid redundant work and save time.
 \endtcolorbox
-\tcolorbox[mybox={Hash Functions and Tables}]
-Tables are a special kind of collection that associate keys to values, allowing the following operations:
-\begin{enumerate}[noitemsep, topsep=0pt]
-    \item Insert a new key-value pair.
-    \item Delete a key-value pair.
-    \item Search for the value associated with a given key.
-\end{enumerate}
-\noindent\textbf{Direct-Address Tables.}  
-We define a function $f : K \rightarrow \{1, \dots, |K|\}$ and create an array of size $|K|$ where each position corresponds directly to a key, allowing constant-time access.
-\noindent\textbf{Hash Tables.}  
-Hash tables use space proportional to the number of stored keys $|K'|$, i.e., $\Theta(|K'|)$, and support the above operations in expected time $\mathcal{O}(1)$ in the average case.  
-To achieve this, we define a hash function $h : K \rightarrow \{1, \dots, M\}$ and use an array of size $M$ where each entry contains a linked list of key-value pairs $(k, v)$.
+
+\tcolorbox[mybox={Binary search}]
+\begin{algorithmic}[1]
+    \Procedure{BS}{$A,k,p,q$}
+        \If{$q<p$}
+            \State \Return $"NO"$ \Comment{array is empty and doesn't contain k}
+        \Else
+            \State $mid \gets \lfloor \frac{p+q}{2} \rfloor$
+            \If{$A[mid] = k$}
+                \State \Return $"YES"$
+            \ElsIf{$A[mid] > k$}
+                \State \Return \Call{BS}{$A,k,p,mid-1$}
+            \Else
+                \State \Return \Call{BS}{$A,k,mid+1,q$}
+            \EndIf
+        \EndIf
+    \EndProcedure
+\end{algorithmic}
+\textbf{Time complexity:} \timecomplexity{$\bigo(logn)$}
 \endtcolorbox
+
+\tcolorbox[mybox={Injective Functions}] 
+Let $f : \{1, 2, \dots, q\} \to M$ be a function chosen uniformly at random, where $|M| = m$.  
+If $q > 1.78\sqrt{m}$, then the probability that $f$ is injective is at most $\frac{1}{2}$.\\
+$q$ = N\# inputs and $m$ = N\# outputs.
+\endtcolorbox
+
 \tcolorbox[mybox={Strassen’s Algorithm for Matrix Multiplication}]
 Instead of performing 8 recursive multiplications as in the naive divide-and-conquer matrix multiplication, Strassen’s algorithm reduces it to 7, which improves the time complexity.\\
 \textbf{\strut Definitions:}
@@ -381,17 +439,19 @@ C_{12} &= M_3 + M_5 \\
 C_{21} &= M_2 + M_4 \\
 C_{22} &= M_1 - M_2 + M_3 + M_6
 \end{align*}
+\textbf{Recursion:} $T(n) = 7T(n/2) + \Theta(n^2)$
 \textbf{Complexity:} \\
-Time: \( \Theta(n^{\log_2 7}) \approx \Theta(n^{2.81}) \), Space: \( \Theta(n^2) \)
+Time: \timecomplexity{\( \Theta(n^{\log_2 7}) \approx \Theta(n^{2.81}) \)} \\ Space: \( \Theta(n^2) \)
 \endtcolorbox
+
 \tcolorbox[mybox={Priority Queue}]
-A priority queue maintains a dynamic set \( S \) of elements, each with an associated key that defines its priority. At each operation, we can access the element with the highest key.
+A priority queue maintains a dynamic set \( S \) of elements, each with an associated key that defines its priority. At each operation, we can access the element with the highest key. \\
 \textbf{Supported operations:}
 \begin{itemize}[noitemsep,itemsep=0pt]
-    \item \textbf{Insertion:} Insert an element \( x \) into \( S \).
-    \item \textbf{Maximum:} Return the element in \( S \) with the largest key.
-    \item \textbf{Extract-Max:} Remove and return the element with the largest key.
-    \item \textbf{Increase-Key:} Increase the key of an element \( x \) to a new value \( k \) (assuming \( k \geq \) current key).
+    \item \textbf{Insertion:} Insert an element \( x \) into \( S \). \timecomplexity{\(\bigo(log(n))\)}
+    \item \textbf{Maximum:} Return the element in \( S \) with the largest key. \timecomplexity{\(\Theta(1)\)}
+    \item \textbf{Extract-Max:} Remove and return the element with the largest key. \timecomplexity{\(\bigo(log(n))\)}
+    \item \textbf{Increase-Key:} Increase the key of an element \( x \) to a new value \( k \) (assuming \( k \geq \) current key). \timecomplexity{\(\bigo(log(n))\)}
 \end{itemize}
 
 \textbf{Pseudocode:}
@@ -453,67 +513,26 @@ A priority queue maintains a dynamic set \( S \) of elements, each with an assoc
 \end{minipage}%
 }
 \endtcolorbox
-\tcolorbox[mybox={Heap Sort}]
-\textbf{Complexity:}\\
-Space: \( \Theta(n) \), Time: \( \Theta(n \log n) \) \\
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.75\linewidth}
-\begin{algorithmic}[1]
-  \Procedure{Max-Heapify}{$A, i, n$}
-    \State $l \gets \text{Left}(i)$
-    \State $r \gets \text{Right}(i)$
-    \If{$l \leq n$ \textbf{and} $A[l] > A[i]$}
-      \State $largest \gets l$
-    \Else
-      \State $largest \gets i$
-    \EndIf
-    \If{$r \leq n$ \textbf{and} $A[r] > A[largest]$}
-      \State $largest \gets r$
-    \EndIf
-    \If{$largest \neq i$}
-      \State \textbf{exchange} $A[i]$ \textbf{with} $A[largest]$
-      \State \Call{Max-Heapify}{$A, largest, n$}
-    \EndIf
-  \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.75\linewidth}
-\begin{algorithmic}[1]
-  \Procedure{Build-Max-Heap}{$A, n$}
-    \For{$i \gets \lfloor n/2 \rfloor$ \textbf{downto} $1$}
-      \State \Call{Max-Heapify}{$A, i, n$}
-    \EndFor
-  \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.75\linewidth}
-\begin{algorithmic}[1]
-  \Procedure{LargestK}{$A, B, k$}
-    \State Create an empty heap $H$
-    \State $B[k] \gets A[1]$
-    \State Insert $A[2]$ and $A[3]$ into $H$
-    \For{$i \gets k - 1, k - 2, \dots, 1$}
-      \State $tmp \gets$ \Call{Extract-Max}{$H$}
-      \State $B[i] \gets tmp$
-      \State Insert $tmp$'s children in $A$ into $H$
-    \EndFor
-  \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
+
+\tcolorbox[mybox={Disjoint sets}]
+\begin{itemize}[noitemsep,itemsep=0pt]
+    \item \(S = {S_1, ..., S_k}\) is a collection of disjoint dynamic sets. Each set is identified by a representative which is a member of the set.
+    \item Uses a \timecomplexity{linked list} or a \textcolor{blue}{graph forest}.
+    \item \textbf{Make-Set(x):} make a new set \(S_i = {x}\) and add $S_i$ to $S$. \timecomplexity{\(\Theta(1)\)} \textcolor{blue}{\(\Theta(1)\)}
+    \item \textbf{Union(x,y):} if \(x \in S_x, y \in S_y\) then \(S = S - S_x - S_y \cup {S_x \cup S_y}\). \timecomplexity{\(\bigo(m+nlogn)\)} \textcolor{blue}{\(\bigo(m \alpha(n))\)}
+    \item \textbf{Find(x):} returns the representative of the set containing x. \timecomplexity{\(\Theta(1)\)} \textcolor{blue}{\(\bigo(h)\)}
+    \item \textbf{Connected components:} returns disjoint sets of all vertices connected inside a graph. \\ \timecomplexity{\(\bigo(VlogV + E)\)} \textcolor{blue}{\(\bigo(V+E)\)}
+\end{itemize}
 \endtcolorbox
+
 \tcolorbox[mybox={Linked List}]
 A linked list is a linear data structure where each element (node) points to the next. Unlike arrays, it is not index-based and allows efficient insertions and deletions.
 
 \textbf{Operations:}
 \begin{itemize}[noitemsep,itemsep=0pt]
-    \item \textbf{Search:} Find an element with a specific key — \(\Theta(n)\)
-    \item \textbf{Insert:} Insert an element at the head — \(\Theta(1)\)
-    \item \textbf{Delete:} Remove an element — \(\Theta(1)\)
+    \item \textbf{Search:} Find an element with a specific key \timecomplexity{\(\bigo(n)\)}
+    \item \textbf{Insert:} Insert an element at the head \timecomplexity{\(\Theta(1)\)}
+    \item \textbf{Delete:} Remove an element \timecomplexity{\(\Theta(1)\)} \\ \timecomplexity{$\bigo(n)$} if simple list
 \end{itemize}
 
 \textbf{Pseudocode:}
@@ -522,7 +541,7 @@ A linked list is a linear data structure where each element (node) points to the
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.5\linewidth}
 \begin{algorithmic}[1]
-    \Statex \Comment{Searches for the first element with key $k$}
+    \LeftComment{Searches for the first element with key $k$}
     \Procedure{List-Search}{$L, k$}
         \State $x \gets L.\text{head}$
         \While{$x \neq \text{NIL}$ \textbf{and} $x.\text{key} \neq k$}
@@ -531,7 +550,7 @@ A linked list is a linear data structure where each element (node) points to the
         \State \Return $x$
     \EndProcedure
 
-    \Statex \Comment{Inserts a new node $x$ at the head of the list}
+    \LeftComment{Inserts a new node $x$ at the head of the list}
     \Procedure{List-Insert}{$L, x$}
         \State $x.\text{next} \gets L.\text{head}$
         \If{$L.\text{head} \neq \text{NIL}$}
@@ -541,7 +560,7 @@ A linked list is a linear data structure where each element (node) points to the
         \State $x.\text{prev} \gets \text{NIL}$
     \EndProcedure
 
-    \Statex \Comment{Deletes node $x$ from the list}
+    \LeftComment{Deletes node $x$ from the list}
     \Procedure{List-Delete}{$L, x$}
         \If{$x.\text{prev} \neq \text{NIL}$}
             \State $x.\text{prev}.\text{next} \gets x.\text{next}$
@@ -570,8 +589,8 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Statex \Comment{Searches for a node with key $k$ starting from node $x$}
-    \Statex \Comment{Runs in $O(h)$ time, where $h$ is the height of the tree}
+    \LeftComment{Searches for a node with key $k$ starting from node $x$}
+    \Statex \Comment{Runs in \timecomplexity{$\bigo(h)$} time, where $h$ is the height of the tree ($\bigo(log(n))$ if balanced)}
     \Procedure{Tree-Search}{$x, k$}
         \If{$x = \text{NIL}$ \textbf{or} $k = x.\text{key}$}
             \State \Return $x$
@@ -583,7 +602,7 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
     \EndProcedure
 
     \Statex \Comment{Finds the minimum key node in the subtree rooted at $x$}
-    \Procedure{Tree-Minimum}{$x$}
+    \Procedure{Tree-Minimum}{$x$} \timecomplexity{$\bigo(h)$}
         \While{$x.\text{left} \neq \text{NIL}$}
             \State $x \gets x.\text{left}$
         \EndWhile
@@ -591,7 +610,7 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
     \EndProcedure
 
     \Statex \Comment{Finds the maximum key node in the subtree rooted at $x$}
-    \Procedure{Tree-Maximum}{$x$}
+    \Procedure{Tree-Maximum}{$x$} \timecomplexity{$\bigo(h)$}
         \While{$x.\text{right} \neq \text{NIL}$}
             \State $x \gets x.\text{right}$
         \EndWhile
@@ -601,12 +620,52 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
 \end{minipage}%
 }
 \endtcolorbox
-\tcolorbox[mybox={Modify a Binary Tree}]
+
+\tcolorbox[mybox={Rod Cutting}]
+Given a rod of length $n$ and a table of prices $p_i$ for rods of length $i = 1, \dots, n$, determine the optimal way to cut the rod to maximize profit.\\
+The optimal revenue function $r(n)$ is defined as:
+\resizebox{1\textwidth}{!}{$
+r(n) =
+\begin{cases}
+    0 & \text{if } n = 0, \\
+    \max_{1 \leq i \leq n} \{p_i + r(n - i)\} & \text{if } n \geq 1.
+\end{cases}
+$}
+
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Tree-Insert}{$T, z$}
+    \Procedure{Extended-Bottom-Up-Cut-Rod}{$p, n$}
+        \State let $r[0 \dots n]$ and $s[0 \dots n]$ be new arrays
+        \State $r[0] \gets 0$
+        \State $s[0] \gets 0$ \Comment{Usually $s[0]$ isn't explicitly used for solution reconstruction, but included as per your pseudocode}
+        \For{$j \gets 1 \text{ to } n$}
+            \State $q \gets -\infty$
+            \For{$i \gets 1 \text{ to } j$}
+                \If{$q < p[i] + r[j - i]$}
+                    \State $q \gets p[i] + r[j - i]$
+                    \State $s[j] \gets i$
+                \EndIf
+            \EndFor
+            \State $r[j] \gets q$
+        \EndFor
+        \State \Return $r \text{ and } s$
+    \EndProcedure
+\end{algorithmic}
+\end{minipage}%
+}
+\textbf{Time complexity:} \timecomplexity{\(\Theta(n^2)\)} \\
+Space complexitiy: $\bigo(n)$
+\endtcolorbox
+
+\tcolorbox[mybox={Modify a Binary Tree}]
+\noindent % Prevents indentation if at the start of a paragraph
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.25\linewidth}
+$\triangleright$ With h being the height of the tree.
+\begin{algorithmic}[1]
+    \Procedure{Tree-Insert}{$T, z$} \timecomplexity{\(\bigo(h)\)}
         \State $y \gets \text{NIL}$ \Comment{Parent of $x$}
         \State $x \gets T.\text{root}$
         \While{$x \neq \text{NIL}$}
@@ -627,7 +686,7 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
         \EndIf
     \EndProcedure
 
-    \Procedure{Transplant}{$T, u, v$}
+    \Procedure{Transplant}{$T, u, v$} \timecomplexity{$\Theta(1)$}
         \If{$u.p = \text{NIL}$}
             \State $T.\text{root} \gets v$
         \ElsIf{$u = u.p.\text{left}$}
@@ -640,7 +699,7 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
         \EndIf
     \EndProcedure
 
-    \Procedure{Tree-Delete}{$T, z$}
+    \Procedure{Tree-Delete}{$T, z$} \timecomplexity{\(\bigo(h)\)}
         \If{$z.\text{left} = \text{NIL}$}
             \State \Call{Transplant}{$T, z, z.\text{right}$}
         \ElsIf{$z.\text{right} = \text{NIL}$}
@@ -657,11 +716,68 @@ A binary search tree (BST) is a binary tree where each node has a key and satisf
             \State $y.\text{left}.p \gets y$
         \EndIf
     \EndProcedure
+
+    \Procedure{Tree-Successor}{$x$} \timecomplexity{$\bigo(h)$}
+        \If{$x.\text{right} \neq \text{NIL}$}
+            \State \Return \Call{Tree-Minimum}{$x.\text{right}$}
+        \EndIf
+        \State $y \gets x.\text{p}$
+        \While{$y \neq \text{NIL and } x == y.\text{right}$}
+            \State $x \gets y$
+            \State $y \gets y.\text{p}$
+        \EndWhile
+        \State \Return $y$
+    \EndProcedure
 \end{algorithmic}
 \end{minipage}%
 }
 
+\tcblower
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.25\linewidth}
+\begin{algorithmic}[1]
+    \Procedure{Inorder-Tree-Walk}{$x$} \timecomplexity{\(\bigo(n)\)}
+        \If{$x \neq NIL$}
+            \State \Call{Inorder-Tree-Walk}{$x.\text{left}$}
+            \State print $key[x]$
+            \State \Call{Inorder-Tree-Walk}{$x.\text{right}$}
+        \EndIf
+    \EndProcedure
+\end{algorithmic}
+$\triangleright$ Preorder: print - call(x.left) - call(x.right) \\
+$\triangleright$ Postorder: call(x.left) - call(x.right) - print
+\end{minipage}%
+}
 \endtcolorbox
+
+\tcolorbox[mybox={Counting Sort}]
+\textbf{Counting Sort} assumes the input consists of $n$ integers in the range $0$ to $k$ and sorts them in \timecomplexity{$\bigo(n + k)$} time. It is stable and non-comparative.
+
+\noindent % Prevents indentation before the resizebox
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.25\linewidth}
+\begin{algorithmic}[1]
+    \Procedure{Counting-Sort}{$A, B, n, k$}
+        \State let $C[0 \dots k]$ be a new array
+        \For{$i \gets 0$ \textbf{to} $k$}
+            \State $C[i] \gets 0$
+        \EndFor
+        \For{$j \gets 1$ \textbf{to} $n$}
+            \State $C[A[j]] \gets C[A[j]] + 1$
+        \EndFor
+        \For{$i \gets 1$ \textbf{to} $k$}
+            \State $C[i] \gets C[i] + C[i - 1]$
+        \EndFor
+        \For{$j \gets n$ \textbf{downto} $1$}
+            \State $B[C[A[j]]] \gets A[j]$
+            \State $C[A[j]] \gets C[A[j]] - 1$
+        \EndFor
+    \EndProcedure
+\end{algorithmic}
+\end{minipage}%
+}
+\endtcolorbox
+
 \tcolorbox[mybox={Building a Binary Search Tree}]
 Given a sequence $K = \langle k_1, k_2, \dots, k_n \rangle$ of $n$ distinct sorted keys and, for every $k_i$, a probability $p_i$, find a binary search tree $T$ that minimizes:
 \resizebox{0.95\linewidth}{!}{%
@@ -673,7 +789,7 @@ $%
 
 This is solved via dynamic programming.
 
-\textbf{Time complexity:} $\mathcal{O}(n^3)$
+\textbf{Time complexity:} \timecomplexity{\(\bigo(n^3)\)}
 
 \noindent % Prevents indentation before the resizebox
 \resizebox{\linewidth}{!}{%
@@ -704,71 +820,6 @@ This is solved via dynamic programming.
 \end{minipage}%
 }
 \endtcolorbox
-\tcolorbox[mybox={Rod Cutting}]
-Given a rod of length $n$ and a table of prices $p_i$ for rods of length $i = 1, \dots, n$, determine the optimal way to cut the rod to maximize profit.
-
-The optimal revenue function $r(n)$ is defined as:
-\resizebox{1\textwidth}{!}{$
-r(n) =
-\begin{cases}
-    0 & \text{if } n = 0, \\
-    \max_{1 \leq i \leq n} \{p_i + r(n - i)\} & \text{if } n \geq 1.
-\end{cases}
-$}
-
-
-\noindent % Prevents indentation if at the start of a paragraph
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.25\linewidth}
-\begin{algorithmic}[1]
-    \Procedure{Extended-Bottom-Up-Cut-Rod}{$p, n$}
-        \State let $r[0 \dots n]$ and $s[0 \dots n]$ be new arrays
-        \State $r[0] \gets 0$
-        \State $s[0] \gets 0$ \Comment{Usually $s[0]$ isn't explicitly used for solution reconstruction, but included as per your pseudocode}
-        \For{$j \gets 1 \text{ to } n$}
-            \State $q \gets -\infty$
-            \For{$i \gets 1 \text{ to } j$}
-                \If{$q < p[i] + r[j - i]$}
-                    \State $q \gets p[i] + r[j - i]$
-                    \State $s[j] \gets i$
-                \EndIf
-            \EndFor
-            \State $r[j] \gets q$
-        \EndFor
-        \State \Return $r \text{ and } s$
-    \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
-
-\endtcolorbox
-\tcolorbox[mybox={Counting Sort}]
-\textbf{Counting Sort} assumes the input consists of $n$ integers in the range $0$ to $k$ and sorts them in $\mathcal{O}(n + k)$ time. It is stable and non-comparative.
-
-\noindent % Prevents indentation before the resizebox
-\resizebox{\linewidth}{!}{%
-\begin{minipage}{1.25\linewidth}
-\begin{algorithmic}[1]
-    \Procedure{Counting-Sort}{$A, B, n, k$}
-        \State let $C[0 \dots k]$ be a new array
-        \For{$i \gets 0$ \textbf{to} $k$}
-            \State $C[i] \gets 0$
-        \EndFor
-        \For{$j \gets 1$ \textbf{to} $n$}
-            \State $C[A[j]] \gets C[A[j]] + 1$
-        \EndFor
-        \For{$i \gets 1$ \textbf{to} $k$}
-            \State $C[i] \gets C[i] + C[i - 1]$
-        \EndFor
-        \For{$j \gets n$ \textbf{downto} $1$}
-            \State $B[C[A[j]]] \gets A[j]$
-            \State $C[A[j]] \gets C[A[j]] - 1$
-        \EndFor
-    \EndProcedure
-\end{algorithmic}
-\end{minipage}%
-}
-\endtcolorbox
 
 \tcolorbox[mybox={Matrix-Chain Multiplication}]
 Given a chain $\langle A_1, A_2, \dots, A_n \rangle$ of $n$ matrices, where for $i = 1, 2, \dots, n$, matrix $A_i$ has dimensions $p_{i-1} \times p_i$, find the most efficient way to fully parenthesize the product $A_1 A_2 \cdots A_n$ so as to minimize the total number of scalar multiplications.
@@ -782,7 +833,8 @@ m[i, j] =
 \end{cases}
 $}
 
-
+\resizebox{\linewidth}{!}{%
+\begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
     \Procedure{Matrix-Chain-Order}{$p$}
         \State $n \gets p.\text{length} - 1$
@@ -805,9 +857,11 @@ $}
         \EndFor
     \EndProcedure
 \end{algorithmic}
+\end{minipage}
+}
 
-\textbf{Time complexity:} $\mathcal{O}(n^3)$ \quad \\
-\textbf{Space complexity:} $\mathcal{O}(n^2)$
+\textbf{Time complexity:} \timecomplexity{\(\bigo(n^3)\)} \quad \\
+\textbf{Space complexity:} $\bigo(n^2)$
 \endtcolorbox
 
 \tcolorbox[mybox={Longest Common Subsequence}]
@@ -857,8 +911,8 @@ $}
 \end{minipage}%
 }
 
-\textbf{Time complexity:} $\mathcal{O}(mn)$ \quad
-\textbf{Space complexity:} $\mathcal{O}(mn)$
+\textbf{Time complexity:} \timecomplexity{\(\bigo(mn)\)} \\
+\textbf{Space complexity:} $\bigo(mn)$
 \endtcolorbox
 
 \tcolorbox[mybox={Graph}]
@@ -873,26 +927,17 @@ an edge set $E$ that contains (ordered) pairs of vertices.
 \hline
 Space & $\Theta(|V| + |E|)$ & $\Theta(|V|^2)$ \\
 \hline
-Time to list all vertices adjacent to $u$ & $\Theta(\deg(u))$ & $\Theta(|V|)$ \\
+List adj($u$) & $\Theta(\deg(u))$ & $\Theta(|V|)$ \\
 \hline
-Time to determine whether $(u, v) \in E$ & $O(\deg(u))$ & $\Theta(1)$ \\
+$(u, v) \in E$ ? & $O(\deg(u))$ & $\Theta(1)$ \\
 \hline
 \end{tabular}
 }
 
-\textbf{Connectivity:} A graph is said to be connected if every pair of vertices in the graph is connected.
-
-
-
-\textbf{Connected Component:} A connected component is a maximal connected subgraph of an undirected graph.
-
-
-
-\textbf{Complete Graph:} A complete graph is a simple undirected graph in which every pair of distinct vertices is connected by a unique edge.
-
-
-
-\textbf{Vertex Cut:} A vertex cut or separating set of a connected graph $G$ is a set of vertices whose removal renders $G$ disconnected.
+\textbf{Connectivity:} A graph is said to be connected if every pair of vertices in the graph is connected. \\
+\textbf{Connected Component:} A connected component is a maximal connected subgraph of an undirected graph. \\
+\textbf{Complete Graph:} A complete graph is a simple undirected graph in which every pair of distinct vertices is connected by a unique edge. \\
+\textbf{Vertex Cut:} A vertex cut or separating set of a connected graph $G$ is a set of vertices whose removal renders $G$ disconnected.\\
 \endtcolorbox
 
 \tcolorbox[mybox={Breadth-First Search}]
@@ -930,7 +975,45 @@ from $s$ to $v$, for all $v \in V$.
 \end{algorithmic}
 \end{minipage}%
 }
-\textbf{Time complexity:} $\mathcal{O}(|V| + |E|)$ \quad
+\textbf{Time complexity:} \timecomplexity{\(\bigo(|V| + |E|)\)} \quad
+\endtcolorbox
+
+\tcolorbox[mybox={Topological Sort}]
+Given a directed acyclic graph (DAG) $G = (V, E)$, the goal is to produce a linear ordering of its vertices such that for every edge $(u, v) \in E$, vertex $u$ appears before $v$ in the ordering.
+
+\textbf{Key Properties:}
+\begin{itemize}[noitemsep, topsep=0pt]
+    \item A graph is a DAG if and only if a DFS yields no back edges.
+    \item The topological sort is obtained by performing DFS and ordering vertices in decreasing order of their finishing times.
+\end{itemize}
+
+\textbf{Algorithm:}
+\begin{enumerate}[noitemsep, topsep=0pt]
+    \item Run DFS on $G$ to compute finishing times $v.f$ for all $v \in V$.
+    \item Return the vertices sorted in descending order of $v.f$.
+\end{enumerate}
+
+\textbf{Running Time:} \timecomplexity{$\Theta(|V| + |E|)$}, same as DFS.
+\endtcolorbox
+
+\tcolorbox[mybox={Strongly Connected Components}]
+A \textbf{strongly connected component (SCC)} of a directed graph $G = (V, E)$ is a maximal set of vertices $C \subseteq V$ such that for every pair $u, v \in C$, there is a path from $u$ to $v$ and from $v$ to $u$.
+
+\textbf{Transpose of a Graph:} The transpose of $G$, denoted $G^T = (V, E^T)$, has all edges reversed:
+\[
+E^T = \{(u, v) \mid (v, u) \in E\}
+\]
+$G$ and $G^T$ share the same SCCs. Computing $G^T$ takes $\Theta(|V| + |E|)$ time with adjacency lists.
+
+\textbf{Algorithm (Kosaraju's):}
+\begin{enumerate}[noitemsep, topsep=0pt]
+    \item Run \textbf{DFS} on $G$ to compute finishing times $u.f$ for all $u \in V$.
+    \item Compute the transpose $G^T$.
+    \item Run \textbf{DFS} on $G^T$, but visit vertices in order of decreasing $u.f$ (from step 1).
+    \item Each tree in the resulting DFS forest is one SCC.
+\end{enumerate}
+
+\textbf{Time Complexity:} \timecomplexity{\(\Theta(|V| + |E|)\)}
 \endtcolorbox
 
 \tcolorbox[mybox={Depth-First Search}]
@@ -982,45 +1065,16 @@ Each vertex has a color state:
 \end{algorithmic}
 \end{minipage}%
 }
-\textbf{Time complexity:} $\mathcal{O}(|V| + |E|)$ \quad
-\endtcolorbox
-
-\tcolorbox[mybox={Topological Sort}]
-Given a directed acyclic graph (DAG) $G = (V, E)$, the goal is to produce a linear ordering of its vertices such that for every edge $(u, v) \in E$, vertex $u$ appears before $v$ in the ordering.
-
-\textbf{Key Properties:}
-\begin{itemize}[noitemsep, topsep=0pt]
-    \item A graph is a DAG if and only if a DFS yields no back edges.
-    \item The topological sort is obtained by performing DFS and ordering vertices in decreasing order of their finishing times.
+\textbf{Time complexity:} \timecomplexity{\(\bigo(|V| + |E|)\)} \\
+\textbf{Edge classification:}
+\begin{itemize}
+    \item \textbf{\color{orange}Tree edge:} in the DFS forest. (normal edge)
+    \item \textbf{\color{blue}Back edge:} (u,v) where u is descendant of v
+    \item \textbf{\color{red}Forward edge:} (u,v) where v is descendent of u
+    \item \textbf{\color{green}Cross edge:} any other edge
 \end{itemize}
-
-\textbf{Algorithm:}
-\begin{enumerate}[noitemsep, topsep=0pt]
-    \item Run DFS on $G$ to compute finishing times $v.f$ for all $v \in V$.
-    \item Return the vertices sorted in descending order of $v.f$.
-\end{enumerate}
-
-\textbf{Running Time:} $\Theta(|V| + |E|)$, same as DFS.
-\endtcolorbox
-
-\tcolorbox[mybox={Strongly Connected Components}]
-A \textbf{strongly connected component (SCC)} of a directed graph $G = (V, E)$ is a maximal set of vertices $C \subseteq V$ such that for every pair $u, v \in C$, there is a path from $u$ to $v$ and from $v$ to $u$.
-
-\textbf{Transpose of a Graph:} The transpose of $G$, denoted $G^T = (V, E^T)$, has all edges reversed:
-\[
-E^T = \{(u, v) \mid (v, u) \in E\}
-\]
-$G$ and $G^T$ share the same SCCs. Computing $G^T$ takes $\Theta(|V| + |E|)$ time with adjacency lists.
-
-\textbf{Algorithm (Kosaraju's):}
-\begin{enumerate}[noitemsep, topsep=0pt]
-    \item Run \textbf{DFS} on $G$ to compute finishing times $u.f$ for all $u \in V$.
-    \item Compute the transpose $G^T$.
-    \item Run \textbf{DFS} on $G^T$, but visit vertices in order of decreasing $u.f$ (from step 1).
-    \item Each tree in the resulting DFS forest is one SCC.
-\end{enumerate}
-
-\textbf{Time Complexity:} $\Theta(|V| + |E|)$
+\noindent
+\includegraphics[width=\textwidth]{DFS}%
 \endtcolorbox
 
 \tcolorbox[mybox={Flow Network}]
@@ -1099,7 +1153,8 @@ Then the residual graph is $G_f = (V, E_f)$ where $E_f = \{(u, v) \in V \times V
 
 \textbf{Max-Flow Min-Cut Theorem:} The value of the maximum flow equals the capacity of the minimum cut.\\
 \textbf{Augmenting Path}
-Is a path from the source to the sink in the residual graph such that every edge on the path has available capacity
+Is a path from the source to the sink in the residual graph such that every edge on the path has available capacity \\
+\textbf{Time complexity:} \(\timecomplexity{\bigo(E|flow_{max}|)}\)
 \endtcolorbox
 
 \tcolorbox[mybox={Bipartite Graphs}]
@@ -1180,7 +1235,7 @@ Uses a min-priority queue to select the next lightest edge crossing the cut.
 \end{minipage}%
 }
 
-\textbf{Runtime:} $\Theta((V + E) \log V)$ with binary heaps, $\Theta(E + V \log V)$ with Fibonacci heaps.
+\textbf{Runtime:} \timecomplexity{$\Theta((ElogV)$} \\ $\Theta(E+VlogV)$ with Fibonacci heaps.
 \endtcolorbox
 
 \tcolorbox[mybox={Kruskal’s Algorithm}]
@@ -1216,7 +1271,7 @@ Uses a min-priority queue to select the next lightest edge crossing the cut.
 \end{minipage}%
 }
 
-\textbf{Runtime:} $\Theta(|E| \log |E|)$ due to sorting, plus nearly linear time for Union-Find operations (with union by rank and path compression).
+\textbf{Runtime:} \timecomplexity{$\Theta(|E| \log |E|)$} due to sorting, plus nearly linear time for Union-Find operations (with union by rank and path compression).
 \endtcolorbox
 \tcolorbox[mybox={Edge Disjoint Paths using Max Flow}]
 You can use the Max-Flow algorithm to find all edge-disjoint paths from a source to a sink by assigning a capacity of $1$ to every edge and running Ford–Fulkerson.  
@@ -1265,7 +1320,7 @@ The maximum flow value will be equal to the number of edge-disjoint $s$–$t$ pa
 \end{minipage}%
 }
 
-\textbf{Main Algorithm:}
+\textbf{Main Algorithm:\\}
 \noindent % Prevents indentation if at the start of a paragraph
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
@@ -1289,7 +1344,7 @@ The maximum flow value will be equal to the number of edge-disjoint $s$–$t$ pa
 }
 
 
-\textbf{Runtime:} $\Theta(|V||E|)$ \\
+\textbf{Runtime:} \timecomplexity{$\Theta(|V||E|)$} \\
 \textbf{Handles:} Negative weights (but no negative cycles)
 \endtcolorbox
 
@@ -1321,16 +1376,32 @@ The maximum flow value will be equal to the number of edge-disjoint $s$–$t$ pa
 \end{algorithmic}
 \end{minipage}%
 }
-\textbf{Runtime:} $\Theta(|E| \log |V|)$
+\textbf{Runtime:} \timecomplexity{$\Theta(|E| \log |V|)$}
 \endtcolorbox
 \tcolorbox[mybox={HTable}]
 Hash tables are a data structure that use a function $h(k)$ mapping keys to indices in the range $1$ to $p$, such that each element is stored at index $h(k)$.  
 Collisions are managed using chaining (linked lists), leading to:
 \begin{itemize}
-  \item $\mathcal{O}(1)$ insertion
-  \item $\mathcal{O}(N + E)$ search (in worst-case)
-  \item $\mathcal{O}(1)$ deletion
+  \item \textbf{Insertion} \timecomplexity{$\bigo(1)$}
+  \item \textbf{Search} \timecomplexity{$\bigo(1)$} E[x]: \timecomplexity{$\bigo(n/m)$}
+  \item \textbf{Deletion} \timecomplexity{$\bigo(1)$ }
+  \item \textbf{Collisions expected} for m entries and n insertions (uniformly random hash function): \(\frac{n^2}{m}\)
 \end{itemize}
+\endtcolorbox
+
+\tcolorbox[mybox={Randomized caching}]
+\begin{itemize}
+    \item Each page is marked (if used recently) or unmarked.
+    \item On miss, evict random unmarked page.
+    \item \textbf{Competitive ratio:} \(2H(k) \approx \bigo(logk)\) (nearly optimal, no randomized algorithm can beat $H(k)$).
+\end{itemize}
+\endtcolorbox
+
+\tcolorbox[mybox={Deterministic caching}]
+\textbf{LRU/FIFO}:\\
+Competitive ratio = $k(\text{cache size})$.\\
+\textbf{LFU/LIFO}:\\
+Unbounded competitive ratio (arbitrary bad).
 \endtcolorbox
 
 \tcolorbox[mybox={The Hiring Problem}]
@@ -1355,14 +1426,26 @@ Then:
 \textbf{Expected Number of Hires:}  
 Let $X$ be the total number of hires. Define $X = \sum_{i=1}^n I_i$, where $I_i = 1$ if the $i$-th candidate is hired (i.e., better than all previous $i - 1$), and 0 otherwise.
 
-\[
-\mathbb{E}[X] = \sum_{i=1}^n \mathbb{E}[I_i] = \sum_{i=1}^n \frac{1}{i} = H_n
-\]
-
+\begin{equation}
+    \begin{split}
+    \mathbb{E}[X] = \sum_{i=1}^n \mathbb{E}[I_i] & = \sum_{i=1}^n \frac{1}{i} = H_n \\[-1mm]
+    & = logn + \Theta(1)
+    \end{split}
+\end{equation}
 
 \textbf{Conclusion:}  
-The expected number of hires is $\Theta(\log n)$, even though there are $n$ candidates.
+The expected number of hires is \timecomplexity{$\Theta(\log n)$}, even though there are $n$ candidates.
 \endtcolorbox
+
+\tcolorbox[mybox={Secretary problem}]
+$n$ candidates arrive in random order, we can hire at most 1 and want best one.
+\begin{itemize}
+    \item Hire 1st candidate: \\Pr[success] = $1/n$.
+    \item Observe first n/2 and select first better: Pr[success] $\geq 1/4$
+    \item Optimal: observe n/e candidates and select first better:\\ Pr[success] $\geq 1/e \approx 36.8\%$
+\end{itemize}
+\endtcolorbox
+
 \tcolorbox[mybox={Quick Sort}]
 \textbf{Quick Sort} is a divide-and-conquer algorithm with the following steps:
 
@@ -1376,7 +1459,7 @@ The expected number of hires is $\Theta(\log n)$, even though there are $n$ cand
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Partition}{$A, p, r$}
+    \Procedure{Partition}{$A, p, r$} \timecomplexity{$\bigo(n)$}
         \State $x \gets A[r]$
         \State $i \gets p - 1$
         \For{$j \gets p$ \textbf{to} $r - 1$}
@@ -1398,7 +1481,7 @@ The expected number of hires is $\Theta(\log n)$, even though there are $n$ cand
 \resizebox{\linewidth}{!}{%
 \begin{minipage}{1.25\linewidth}
 \begin{algorithmic}[1]
-    \Procedure{Quick-Sort}{$A, p, r$}
+    \Procedure{Quick-Sort}{$A, p, r$} \timecomplexity{$\bigo(nlogn)$}
         \If{$p < r$}
             \State $q \gets \Call{Partition}{A, p, r}$
             \State \Call{Quick-Sort}{$A, p, q - 1$}
@@ -1419,7 +1502,7 @@ The expected number of hires is $\Theta(\log n)$, even though there are $n$ cand
         \State $i \gets \Call{Random}{p, r}$
         \State exchange $A[r]$ with $A[i]$
         \State \Return \Call{Partition}{$A, p, r$}
-    \EndProcedure
+    \EndProcedure \timecomplexity{$\Theta(nlogn)$}
 \end{algorithmic}
 \end{minipage}%
 }
@@ -1440,9 +1523,19 @@ The expected number of hires is $\Theta(\log n)$, even though there are $n$ cand
 \end{algorithmic}
 \end{minipage}%
 }
-\textbf{Random Runtime:} $\Theta(|N| \log|N|)$
-\textbf{Worst Runtime:} $\Theta(|N|^2)$
+\textbf{Random Runtime:} \timecomplexity{$\Theta(nlogn)$} \\
+\textbf{Worst Runtime:} \timecomplexity{$\Theta(n^2)$}
+
+\tcblower
+
+\textbf{Probability} to compare elements of A $z_i$ with $z_j$:
+\begin{itemize}
+    \item If x the pivot $z_i < x < z_j$ then $Pr = 0$.
+    \item Else $Pr = \frac{2}{j-i+1}$
+\end{itemize}
+
 \endtcolorbox
+
 \tcolorbox[mybox={Online Algorithms}]
 An \textbf{online algorithm} processes its input piece-by-piece in a serial fashion, i.e., it does not have access to the entire input from the start. Instead, it must make decisions based only on the current and past inputs without knowledge of future inputs.
 
