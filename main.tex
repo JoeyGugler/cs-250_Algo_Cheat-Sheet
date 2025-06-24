@@ -66,8 +66,11 @@
 \begin{document}
 \begin{multicols}{7} % Adjust number of columns as needed
 \tcolorbox[mybox={Facts}]
-\resizebox{0.75\textwidth}{!}{$\displaystyle \sum_{k=0}^{n} ar^k = \frac{ar^{n+1}-a}{r-1} \quad \text{for } r \notin \{0, 1\}$}
-
+\resizebox{0.75\textwidth}{!}{$\displaystyle \sum_{k=0}^{n} ar^k = \frac{ar^{n+1}-a}{r-1} \quad \text{for } r \notin \{0, 1\}$}\\
+$log_br = \frac{logb}{logr}$\\
+$b^e = 2^{log(b)e}$\\
+$a^{\frac{1}{loga}} = 2$\\
+$a^{logb} = 2^{log(a)log(b)} = b^{loga}$
 \tcblower
 
 $\bigo(1)<\bigo((logn)^c)<\bigo(logn)\\<\bigo(log^2n)<\bigo(n)<\bigo(nlogn)\\<\bigo(n^c)<\bigo(c^n)<\bigo(n!)<\bigo(n^n)$
@@ -153,12 +156,6 @@ Special case:\\
     \item If \(a_1b_1^c + a_2b_2^c + ...  = 1\) \\ \hspace*{2mm} then \( \Theta(n^c \log n)\).
     \item If \(a_1b_1^c + a_2b_2^c + ...  > 1 \) \\ \hspace*{2mm} then \( \Theta(n^e)\), \\ \hspace*{2mm} where \(a_1b_1^e + a_2b_2^e + ... = 1\).
 \end{enumerate}
-\endtcolorbox
-
-\tcolorbox[mybox={Injective Functions}] 
-Let $f : \{1, 2, \dots, q\} \to M$ be a function chosen uniformly at random, where $|M| = m$.  
-If $q > 1.78\sqrt{m}$, then the probability that $f$ is injective is at most $\frac{1}{2}$.\\
-$q$ = N\# inputs and $m$ = N\# outputs.
 \endtcolorbox
 
 \tcolorbox[mybox={Insertion Sort}]
@@ -415,6 +412,12 @@ The core idea is to \textbf{remember previous computations} to avoid redundant w
     \EndProcedure
 \end{algorithmic}
 \textbf{Time complexity:} \timecomplexity{$\bigo(logn)$}
+\endtcolorbox
+
+\tcolorbox[mybox={Injective Functions}] 
+Let $f : \{1, 2, \dots, q\} \to M$ be a function chosen uniformly at random, where $|M| = m$.  
+If $q > 1.78\sqrt{m}$, then the probability that $f$ is injective is at most $\frac{1}{2}$.\\
+$q$ = N\# inputs and $m$ = N\# outputs.
 \endtcolorbox
 
 \tcolorbox[mybox={Strassen’s Algorithm for Matrix Multiplication}]
